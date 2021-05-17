@@ -1,0 +1,16 @@
+{
+  "name": "tablegen",
+  "version": "1.0.0",
+  "description": "WCAG Compliant Table Generation",
+  "scripts": {
+    "start": "parcel serve ./index.html",
+    "build": "parcel build ./index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.2"
+  },
+
+  "dependencies": {}
+}
