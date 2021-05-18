@@ -23,9 +23,9 @@
         <section id="TableHeadSettings">
             <h2>Table Head</h2>
             <label for="TableCaptionControl">Caption:</label>
-            <input type="text" id="TableCaptionControl" maxlength="200" data-keyup="replace textContent of #out_caption with value">
+            <input type="text" id="TableCaptionControl" maxlength="200" data-keyup="replace: textContent of #out_caption with value">
             <hr>
-            <button type="button" id="InsertRowButton" data-click="insert innerHTML of #out_tbody>tr>td with template">Click To Add</button>
+            <button type="button" id="InsertRowButton" data-click="insert: innerHTML of {#out_tbody td} with template">Click To Add</button>
             <template id="TestTemplate" data-for="InsertRowButton">
                 <a href="https://google.com">Google It!</a>
             </template>
