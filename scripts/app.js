@@ -10,6 +10,13 @@ UI.get = {
     value: (source) => {
         return source.value;
     },
+    template: (source) => {
+        let selector = `template[data-for='${source.id || source.name}']`;
+
+        let html = document.querySelector(selector).innerHTML;
+
+        return html;
+    }
 }
 
 UI.set = {
@@ -27,14 +34,33 @@ UI.set = {
     }
 }
 
+UI.add = {
+    innerHTML: () => {
+        //TODO: Code that appends instead of replaces
+    },
+    textContent: () => {
+        //TODO: Code that appends instead of replaces
+    },
+    value: () => {
+        //TODO: Code that appends instead of replaces
+    }
+}
+
+const appBindings = {};
+
 class binding {
-    constructor(method, to, target, from, source) {
-        this.method = method;
-        this.targetSelector = target;
-        this.targetData = to;
-        this.sourceData = from;
-        this.source = source;
+    constructor(sourceElement, bindingString) {
+
+        let values = bindingString.split(" of ").join(",").split(" with ").join(",").split(" ").join(",").split(",");
+
+        this.method = values[0];
+        this.targetData = values[1];
+        this.targetSelector = values[2];
+        this.sourceData = values[3];
+        this.source = sourceElement;
         this.history = [];
+
+        appBindings[this.source.id || this.source.name] = this;
 
     }
 
@@ -47,21 +73,23 @@ class binding {
         let result = UI.set[this.targetData]?.(target, data);
 
         this.history.push(result);
-
-        console.log("test");
     };
+
+    insert = () => {
+
+    }
 }
 
 
-const processBinding = (source, bindingString) => {
+function executeBinding(source, type) {
+
+    let bindingString = source.dataset[type];
 
     if (!bindingString) return false;
 
-    let values = bindingString.split(" of ").join(",").split(" with ").join(",").split(" ").join(",").split(",");
+    let keyupBinding = appBindings[source.id || source.name] ?? new binding(source, bindingString);
 
-    let output = new binding(values[0], values[1], values[2], values[3], source);
-
-    return output;
+    keyupBinding.update();
 }
 
 
@@ -70,23 +98,14 @@ document.body.addEventListener("keyup", (e) => {
 
     let source = e.target;
 
-    if (!source.dataset.keyup) return false;
-
-    let binding = processBinding(source, source.dataset.keyup);
-
-    binding.update();
-
+    executeBinding(source, "keyup");
 });
 
 document.body.addEventListener("change", (e) => {
 
     let source = e.target;
 
-    if (!source.dataset.change) return false;
-
-    let binding = processBinding(source, source.dataset.change);
-
-    binding.update();
+    executeBinding(source, "change");
 
 });
 
@@ -94,10 +113,6 @@ document.body.addEventListener("click", (e) => {
 
     let source = e.target;
 
-    if (!source.dataset.click) return false;
-
-    let binding = processBinding(source, source.dataset.click);
-
-    Actions.click[binding.subAction]?.(source, e);
+    executeBinding(source, "click");
 
 });

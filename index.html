@@ -6,6 +6,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/tablegen.css">
+    <style>
+        
+        table, tr, th, td{
+            border: 1px solid black;
+            padding:2px;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -15,7 +23,12 @@
         <section id="TableHeadSettings">
             <h2>Table Head</h2>
             <label for="TableCaption">Caption:</label>
-            <input type="text" name="TableCation" maxlength="200" data-keyup="update innerHTML of #out_caption with value">
+            <input type="text" name="TableCaptionControl" maxlength="200" data-keyup="update innerHTML of #out_caption with value">
+            <hr>
+            <button type="button" id="InsertRowButton" data-click="update innerHTML of #out_tbody>tr>td with template">Click To Add</button>
+            <template id="TestTemplate" data-for="InsertRowButton">
+                <a href="https://google.com">Google It!</a>
+            </template>
         </section>
         <section id="TableBodySettings">
             <div id="MainTable">
