@@ -1,14 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>WCAG-Compliant Table Generator</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="./css/tablegen.css">
-    </head>
-    <body>
-        <h1>WCAG Compliant Table Generation</h1>
-        <p>Coming Soon</p>
-        <script src="./scripts/app.js"></script>
-    </body>
+
+<head>
+    <title>WCAG-Compliant Table Generator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/tablegen.css">
+</head>
+
+<body>
+    <div id="AppWrapper">
+        <h1>TableGen - WCAG Table Creation Tool</h1>
+        <p>Use this app to create WCAG/Section 508 Compliant HTML Tables</p>
+        <section id="TableHeadSettings">
+            <h2>Table Head</h2>
+            <label for="TableCaption">Caption:</label>
+            <input type="text" name="TableCation" maxlength="200" data-keyup="update innerHTML of #out_caption with value">
+        </section>
+        <section id="TableBodySettings">
+            <div id="MainTable">
+                <table id="out_table">
+                    <caption id="out_caption"></caption>
+                    <thead id="out_thead">
+                        <tr>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="out_tbody">
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </section>
+    </div>
+    <script src="scripts/app.js"></script>
+    <!-- <script src="./js/index.js"></script> -->
+</body>
+
 </html>
