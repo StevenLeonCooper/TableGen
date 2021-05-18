@@ -5,9 +5,9 @@
     },
     "include": [
         "libs/mustache.js",
-        "./helper_ajax.js",
-        "./helper_dom.js",
-        "./helper_events.js",
-        "./app.js"
+        "helper_ajax.js",
+        "helper_ui.js",
+        "helper_events.js",
+        "app.js"
     ]
   }

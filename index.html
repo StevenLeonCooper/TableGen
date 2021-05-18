@@ -22,8 +22,8 @@
         <p>Use this app to create WCAG/Section 508 Compliant HTML Tables</p>
         <section id="TableHeadSettings">
             <h2>Table Head</h2>
-            <label for="TableCaption">Caption:</label>
-            <input type="text" name="TableCaptionControl" maxlength="200" data-keyup="replace innerHTML of #out_caption with value">
+            <label for="TableCaptionControl">Caption:</label>
+            <input type="text" id="TableCaptionControl" maxlength="200" data-keyup="replace textContent of #out_caption with value">
             <hr>
             <button type="button" id="InsertRowButton" data-click="insert innerHTML of #out_tbody>tr>td with template">Click To Add</button>
             <template id="TestTemplate" data-for="InsertRowButton">
@@ -49,7 +49,7 @@
             </div>
         </section>
     </div>
-    <script src="scripts/app.js"></script>
+    <script type="module" src="scripts/app.js"></script>
     <!-- <script src="./js/index.js"></script> -->
 </body>
 
