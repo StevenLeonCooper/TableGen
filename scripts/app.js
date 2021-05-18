@@ -35,14 +35,14 @@ UI.set = {
 }
 
 UI.add = {
-    innerHTML: () => {
-        //TODO: Code that appends instead of replaces
+    innerHTML: (target, data) => {
+        target.innerHTML = target.innerHTML + data;
     },
-    textContent: () => {
-        //TODO: Code that appends instead of replaces
+    textContent: (target, data) => {
+        target.textContent = target.textContent + data;
     },
-    value: () => {
-        //TODO: Code that appends instead of replaces
+    value: (target, data) => {
+        target.value = target.value + data;
     }
 }
 
@@ -64,7 +64,7 @@ class binding {
 
     }
 
-    update = () => {
+    replace = () => {
 
         let target = document.querySelector(this.targetSelector);
 
@@ -77,7 +77,19 @@ class binding {
 
     insert = () => {
 
+        let target = document.querySelector(this.targetSelector);
+
+        let data = UI.get[this.sourceData]?.(this.source);
+
+        let result = UI.add[this.targetData]?.(target, data);
+
+        this.history.push(result);
     }
+
+    update = () => {
+        this[this.method]?.();
+    }
+
 }
 
 
