@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "WCAG Compliant Table Generation",
   "scripts": {
-    "start": "parcel serve ./index.html",
-    "build": "parcel build ./index.html --public-url ."
+    "start": "parcel serve ./scripts/app.js",
+    "build": "parcel build ./scripts/app.js"
   },
+  "main":"./js/index.js",
   "author": "",
   "license": "ISC",
   "devDependencies": {
