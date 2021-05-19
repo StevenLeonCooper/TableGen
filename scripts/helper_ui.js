@@ -2,6 +2,8 @@ import mustache from "./libs/mustache.js";
 
 import {contexts} from "./app.js";
 
+import {events} from "./helper_events.js";
+
 export const UI = { set: {}, get: {} };
 
 UI.get = {
@@ -52,3 +54,33 @@ UI.add = {
         target.value = target.value + data;
     }
 }
+
+const closeModal = ()=>{
+    document.getElementById("ModalWrapper")?.remove();
+};
+
+UI.modal = (content)=>{
+
+    events.click.closeModal = events.click.closeModal || closeModal;
+
+    let template = `<div data-click="closeModal" id="ModalContent">${content}</div>`;
+    
+    let wrapper = document.createElement("div");
+    
+    wrapper.id="ModalWrapper";
+    
+    wrapper.dataset.click = "closeModal";
+    
+    wrapper.innerHTML = template;
+    
+    document.body.appendChild(wrapper);
+};
+
+UI.alert = (message)=>{
+    let template = `<div id="Alert">${message}<hr><button data-click="closeModal">Okay</button></div>`;
+
+    UI.modal(template);
+};
+
+window.shout = UI.modal;
+window.scream = UI.alert;

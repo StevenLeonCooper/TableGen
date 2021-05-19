@@ -61,7 +61,7 @@ events.click.addTableData = (source, e) => {
     }
 };
 
-events.click.deleteColumn = (source, e) => {
+events.click.deleteTableData = (source, e) => {
     //TODO: Make this more specific so it truly only deletes the correct element.
     source.parentNode.parentNode.removeChild(source.parentNode);
 
