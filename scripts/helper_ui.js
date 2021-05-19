@@ -1,3 +1,7 @@
+import mustache from "./libs/mustache.js";
+
+import {contexts} from "./app.js";
+
 export const UI = { set: {}, get: {} };
 
 UI.get = {
@@ -11,11 +15,14 @@ UI.get = {
         return source.value;
     },
     template: (source) => {
-        let selector = `template[data-for='${source.id || source.name}']`;
+
+        let selector = `[data-for='${source.id || source.name}']`;
 
         let html = document.querySelector(selector).innerHTML;
 
-        return html;
+        let rendered = mustache.render(html, contexts);
+
+        return rendered;
     }
 }
 
