@@ -7,12 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/tablegen.css">
     <style>
-        
-        table, tr, th, td{
+        table,
+        tr,
+        th,
+        td {
             border: 1px solid black;
-            padding:2px;
+            padding: 2px;
         }
-
     </style>
 </head>
 
@@ -23,14 +24,30 @@
         <section id="TableHeadSettings">
             <h2>Table Head</h2>
             <label for="TableCaptionControl">Caption:</label>
-            <input type="text" id="TableCaptionControl" maxlength="200" data-keyup="replace: textContent of #out_caption with value">
+            <input type="text" id="TableCaptionControl" maxlength="200"
+                data-keyup="replace: textContent of #out_caption with value">
             <hr>
-            <button type="button" id="InsertRowButton" data-click="insert: innerHTML of {#out_tbody td} with template">Click To Add</button>
-            <template id="TestTemplate" data-for="InsertRowButton">
-                <a href="https://google.com">Google It!</a>
-            </template>
+
         </section>
         <section id="TableBodySettings">
+            <h2>Output Table</h2>
+            <button type="button" id="InsertRowButton" data-click="insert: innerHTML of {#out_tbody} with template">Add
+                Row</button>
+            <template id="NewRowTemplate" data-for="InsertRowButton">
+                <tr>
+                    <td>
+                        <button class="add-col" data-click="addColumn">+</button>
+                    </td>
+                </tr>
+            </template>
+            <template id="ExtraColumnTemplate">
+                <td>
+                    <button class="del-col" data-click="deleteColumn">-</button>
+                    <input type="text" size="10" value="Value Here">
+                    <button class="add-col" data-click="addColumn">+</button>
+                </td>
+            </template>
+            <hr>
             <div id="MainTable">
                 <table id="out_table">
                     <caption id="out_caption"></caption>
@@ -41,12 +58,13 @@
                     </thead>
                     <tbody id="out_tbody">
                         <tr>
-                            <td></td>
+                            <td><button class="add-col" data-click="addColumn">+</button></td>
                         </tr>
                     </tbody>
                     <tfoot></tfoot>
                 </table>
             </div>
+            <hr>
         </section>
     </div>
     <script type="module" src="scripts/app.js"></script>
