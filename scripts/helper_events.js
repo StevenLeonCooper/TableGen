@@ -19,11 +19,13 @@ events.click.addColumn = (source, e) => {
 
     let newData = pageContext.dataTemplate;
 
-    let newHeader = newData.replace("td>","th>");
+    let newHeader = newData.replace("td>","th>").replace("<td","<th");
 
     let headRow = document.querySelector("#out_thead tr");
 
     let bodyRows = document.querySelectorAll("#out_tbody tr");
+
+    debugger;
 
     headRow.innerHTML = headRow.innerHTML + newHeader;
 
