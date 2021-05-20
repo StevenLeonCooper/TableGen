@@ -61,6 +61,10 @@ events.click.deleteTableData = (source, e) => {
 
     pageContext.columnCount--;
 
+    pageContext.rows.splice(col,1);
+
+    pageContext.updateRows();
+
 
 };
 

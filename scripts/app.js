@@ -20,7 +20,7 @@ class context {
         this.toTH = () => {
             return function (object, render) {
                 var rendered = render(object);
-                rendered = rendered.replace("td>", "th>").replace("<td","<th");
+                rendered = rendered.replace("td>", "th>").replace("<td", "<th");
                 return rendered;
             };
         }
@@ -30,7 +30,7 @@ class context {
     }
 
     updateRows = (data) => {
-        this.rows.push(data);
+        if (data) { this.rows.push(data); }
         this.rowTemplate = this.rows.join("<!--|-->");
     }
 };
