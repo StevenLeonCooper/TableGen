@@ -50,10 +50,10 @@
         </section>
     </div>
     <script type="template" id="TableDataTemplate">
-        <td data-index="{{columns}}">
-            <button class="del-col" data-click="deleteTableData">-</button>
-            <input type="text" size="10" value="Value Here">
-            <button class="add-col" data-click="addTableData">+</button>
+        <td data-index="{{columnCount}}">
+            <button data-col={{columnCount}} class="del-col" data-click="deleteTableData">-</button>
+            <input data-col={{columnCount}} type="text" size="10" value="In Column {{columnCount}}">
+            <button data-col={{columnCount}} class="add-col" data-click="addTableData">+</button>
         </td>
     </script>
     <script type="template" id="MainTableTemplate" data-for="PageBody">

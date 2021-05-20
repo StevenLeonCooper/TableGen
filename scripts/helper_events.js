@@ -15,7 +15,9 @@ events.click.addRow = (source, e) =>{
 
 events.click.addColumn = (source, e) => {
 
-    let newData = pageContext.dataTemplate;
+    pageContext.columnCount++;
+
+    let newData = mustache.render(pageContext.dataTemplate, pageContext);
 
     let newHeader = newData.replace("td>","th>").replace("<td","<th");
 
@@ -23,15 +25,11 @@ events.click.addColumn = (source, e) => {
 
     let bodyRows = document.querySelectorAll("#out_tbody tr");
 
-    debugger;
-
     headRow.innerHTML = headRow.innerHTML + newHeader;
 
     bodyRows.forEach((el)=>{
         el.innerHTML = el.innerHTML + newData;
     });
-
-    pageContext.columnCount++;
 
     pageContext.updateRows(newData);
 
@@ -45,7 +43,24 @@ events.click.addTableData = (source, e) => {
 
 events.click.deleteTableData = (source, e) => {
     //TODO: Make this more specific so it truly only deletes the correct element.
-    source.parentNode.parentNode.removeChild(source.parentNode);
+    // source.parentNode.parentNode.removeChild(source.parentNode);
+
+    let col = source.dataset.col;
+
+    if(col == 1) {
+        UI.alert("Cannot Delete Column 1");
+        return false;
+    }
+
+    let query = `[data-index='${col}']`;
+
+    document.querySelectorAll(query).forEach((target)=>{
+
+        target.parentElement.removeChild(target);
+    });
+
+    pageContext.columnCount--;
+
 
 };
 

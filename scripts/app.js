@@ -4,6 +4,7 @@ import { appBindings, binding } from './helper_bindings.js';
 import { events } from './helper_events.js';
 
 import { UI } from './helper_ui.js';
+import mustache from './libs/mustache.js';
 
 class context {
 
@@ -88,11 +89,15 @@ document.body.onload = () => {
 
     let dataTemplate = document.getElementById("TableDataTemplate").innerHTML;
 
-    setupRowTemplate(dataTemplate);
+    let dataTemplateFirstRun = mustache.render(dataTemplate, pageContext);
+
+    pageContext.dataTemplate = dataTemplateFirstRun;
+
+    let mainTableHtml = UI.get.template(source);
 
     pageContext.dataTemplate = dataTemplate;
 
-    let mainTableHtml = UI.get.template(source);
+    setupRowTemplate(dataTemplateFirstRun);
 
     let mainTable = document.getElementById("MainTable");
 
