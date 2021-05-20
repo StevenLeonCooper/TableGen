@@ -1,6 +1,8 @@
 import mustache from "./libs/mustache.js";
 
-import {contexts} from "./app.js";
+import {pageContext} from "./app.js";
+
+import {UI} from "./helper_ui.js";
 
 export const events = {
     click: {},
@@ -9,24 +11,18 @@ export const events = {
 
 events.click.addRow = (source, e) =>{
 
-    if(contexts.rowTemplate.length == 0)
-    {
-        let newData = document.querySelector("#ExtraColumnTemplate").innerHTML;
-        contexts.rowTemplate.push(newData);
-    }
-
-    outputTemplate = contexts.rowTemplate.join("<!-- | -->");
-
+    
 };
 
 
 events.click.addColumn = (source, e) => {
 
-    let newData = document.querySelector("#ExtraColumnTemplate").innerHTML;
+    let newData = pageContext.dataTemplate;
 
     let newHeader = newData.replace("td>","th>");
 
     let headRow = document.querySelector("#out_thead tr");
+
     let bodyRows = document.querySelectorAll("#out_tbody tr");
 
     headRow.innerHTML = headRow.innerHTML + newHeader;
@@ -35,34 +31,24 @@ events.click.addColumn = (source, e) => {
         el.innerHTML = el.innerHTML + newData;
     });
 
-    contexts.columnCount++;
-    contexts.updateRows(newData);
+    pageContext.columnCount++;
 
-    console.log(contexts);
+    pageContext.updateRows(newData);
+
+    console.log(pageContext);
 };
 
 events.click.addTableData = (source, e) => {
 
-    let template = document.querySelector("#ExtraColumnTemplate");
-
-    let newContent = template.content.cloneNode(true);
-
-    let thisRow = source.parentNode.parentNode;
-
-    thisRow.appendChild(newContent);
-
-    let headRow = document.querySelector("#out_thead tr");
-
-    let currentCount = headRow.children.length;
-    let newCount = thisRow.children.length;
-
-    if (newCount > currentCount) {
-        headRow.innerHTML = headRow.innerHTML + `<th><button data-click="deleteColumn" title="Delete">-</button>Heading</th>`;
-    }
+    
 };
 
 events.click.deleteTableData = (source, e) => {
     //TODO: Make this more specific so it truly only deletes the correct element.
     source.parentNode.parentNode.removeChild(source.parentNode);
 
+};
+
+events.click.deleteRow = (source,e)=>{
+    let t = UI;
 };

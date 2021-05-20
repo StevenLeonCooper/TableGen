@@ -3,6 +3,8 @@ import { appBindings, binding } from './helper_bindings.js';
 
 import { events } from './helper_events.js';
 
+import { UI } from './helper_ui.js';
+
 class context {
 
     constructor() {
@@ -11,8 +13,16 @@ class context {
         this.rowCount = 1;
         this.headerTemplate = "";
         this.rowTemplate = "";
+        this.dataTemplate = "";
         this.columns = [];
         this.rows = [];
+        this.toTH = () => {
+            return function (object, render) {
+                var rendered = render(object);
+                rendered = rendered.replace("td>", "th>").replace("<td","<th");
+                return rendered;
+            };
+        }
     }
     updateColumns = (data) => {
         this.columns.push(data);
@@ -24,16 +34,15 @@ class context {
     }
 };
 
-export const contexts = new context();
+export const pageContext = new context();
 
 
-if (contexts.rowTemplate.length == 0) {
-    let newData = document.querySelector("#ExtraColumnTemplate").innerHTML;
-    contexts.updateRows(newData);
-    console.log(contexts);
-}
-
-
+function setupRowTemplate(newData) {
+    if (pageContext.rowTemplate.length == 0) {
+        newData = `${newData}`;
+        pageContext.updateRows(newData);
+    }
+};
 
 function executeBinding(source, type) {
 
@@ -72,3 +81,22 @@ document.body.addEventListener("click", (e) => {
 
     executeBinding(source, "click");
 });
+
+document.body.onload = () => {
+
+    let source = document.body;
+
+    let dataTemplate = document.getElementById("TableDataTemplate").innerHTML;
+
+    setupRowTemplate(dataTemplate);
+
+    pageContext.dataTemplate = dataTemplate;
+
+    let mainTableHtml = UI.get.template(source);
+
+    let mainTable = document.getElementById("MainTable");
+
+    UI.set.innerHTML(mainTable, mainTableHtml);
+};
+
+window._pageContext = pageContext;

@@ -1,10 +1,10 @@
 import mustache from "./libs/mustache.js";
 
-import {contexts} from "./app.js";
+import {pageContext} from "./app.js";
 
 import {events} from "./helper_events.js";
 
-export const UI = { set: {}, get: {} };
+export const UI = {};
 
 UI.get = {
     innerHTML: (source) => {
@@ -22,7 +22,7 @@ UI.get = {
 
         let html = document.querySelector(selector).innerHTML;
 
-        let rendered = mustache.render(html, contexts);
+        let rendered = mustache.render(html, pageContext);
 
         return rendered;
     }
@@ -82,5 +82,3 @@ UI.alert = (message)=>{
     UI.modal(template);
 };
 
-window.shout = UI.modal;
-window.scream = UI.alert;
