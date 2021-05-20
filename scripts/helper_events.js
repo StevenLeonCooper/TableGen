@@ -10,10 +10,8 @@ export const events = {
 };
 
 events.click.addRow = (source, e) =>{
-
     
 };
-
 
 events.click.addColumn = (source, e) => {
 
