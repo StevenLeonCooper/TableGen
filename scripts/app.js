@@ -134,7 +134,7 @@ document.body.addEventListener("keyup", (e) => {
 
     events.keyup[source.dataset.keyup]?.(source,e);
 
-    executeBinding(source, "keyup");
+    //executeBinding(source, "keyup");
 });
 
 document.body.addEventListener("change", (e) => {
