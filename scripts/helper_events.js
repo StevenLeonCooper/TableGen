@@ -55,3 +55,7 @@ events.click.getHtmlCode = (source) =>{
   let output = `<textarea class='embed'>${mainTable.htmlOutput}</textarea>`;
   UI.modal(output);
 };
+
+events.click.previewTable = () =>{
+    UI.modal(mainTable.htmlOutput);
+};

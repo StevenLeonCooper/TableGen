@@ -57,8 +57,6 @@ class SimpleTable {
         });
 
         this.tableBody.push(newRow);
-
-        debugger;
     }
 
     removeColumn(index) {
