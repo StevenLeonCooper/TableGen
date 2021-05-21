@@ -71,41 +71,71 @@ class SimpleTable {
     }
 
     get htmlOutput() {
-        let headerHtml = this.tableHeading.map(value => `<th>${value}</th>`).join(' ');
+        let headerHtml = this.tableHeading.map(value => `\n           <th>${value}</th>`).join(' ');
         let bodyHtml = "";
         this.tableBody.forEach((item) => {
-            bodyHtml += ("<tr>" + item.map(value => `<td>${value}</td>`).join(' ') + "</tr>");
+            bodyHtml += ("\n      <tr>" + item.map(value => `\n         <td>${value}</td>`).join(' ') + "\n     </tr>");
         });
 
-        let outHtml = `<table>
-                        <caption>${this.caption}</caption>
-                        <thead><tr>${headerHtml}</tr></thead>
-                        <tbody>${bodyHtml}</tbody>
-                        </table>`;
+        let outHtml =` 
+<table>
+    <caption>${this.caption}</caption>
+    <thead>
+        <tr>${headerHtml}
+        </tr>
+    </thead>
+    <tbody>${bodyHtml}
+    </tbody>
+</table>`;
 
         return outHtml;
     }
 
-    updateInterface() {
 
-        let headerHtml = this.tableHeading.map((item, index) => {
-            let context = { column: index, row: 0, value: item, type: "Heading" };
-            return mustache.render(this.thTemplate, context);
-        }).join("");
+    updateInterface(type) {
+        console.time("Update Interface");
+        // This ensures we only mess with the DOM elements we NEED to mess with. 
+        // It dramatically improves performance when the table gets large,
+        // Especially for something simple like the caption or headings. 
+        const update = {
+            Caption: () => {
+                this.element.querySelector("caption").textContent = this.caption;
+            },
+            Header: () => {
+                let headerHtml = this.tableHeading.map((item, index) => {
+                    let context = { column: index, row: 0, value: item, type: "Heading" };
+                    return mustache.render(this.thTemplate, context);
+                }).join("");
 
-        let bodyHtml = "";
+                this.element.querySelector("thead").innerHTML = headerHtml;
+            },
+            Body: () => {
+                let bodyHtml = "";
 
-        this.tableBody.forEach((row, rowIndex) => {
-            bodyHtml += "<tr>";
-            bodyHtml += row.map((item, index) => {
-                let context = { column: index, row: rowIndex, value: item, type: "Value" };
-                return mustache.render(this.tdTemplate, context);
-            }).join("");
-            bodyHtml += "</tr>";
-        });
-        this.element.querySelector("caption").textContent = this.caption;
-        this.element.querySelector("thead").innerHTML = headerHtml;
-        this.element.querySelector("tbody").innerHTML = bodyHtml;
+                this.tableBody.forEach((row, rowIndex) => {
+                    bodyHtml += "<tr>";
+                    bodyHtml += row.map((item, index) => {
+                        let context = { column: index, row: rowIndex, value: item, type: "Value" };
+                        return mustache.render(this.tdTemplate, context);
+                    }).join("");
+                    bodyHtml += "</tr>";
+                });
+
+                this.element.querySelector("tbody").innerHTML = bodyHtml;
+            }
+        };
+
+        type = type ?? ["Caption", "Header", "Body"];
+
+        let i = 0, len = type.length;
+
+        for(i; i < len; i++){
+            let section = type?.[i];
+            let method = update?.[section];
+            method.bind(this).call();
+        }
+
+        console.timeEnd("Update Interface");
     }
 
     updateTableHead(index, value) {
@@ -130,7 +160,7 @@ document.body.addEventListener("keyup", (e) => {
 
     let source = e.target;
 
-    events.keyup[source.dataset.keyup]?.(source,e);
+    events.keyup[source.dataset.keyup]?.(source, e);
 
     //executeBinding(source, "keyup");
 });
@@ -156,7 +186,7 @@ document.body.addEventListener("click", (e) => {
 document.body.onload = () => {
 
     mainTable.updateInterface();
-   
+
 };
 
 window._pageContext = pageContext;

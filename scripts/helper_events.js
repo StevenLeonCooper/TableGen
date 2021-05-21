@@ -13,31 +13,31 @@ export const events = {
 events.click.addColumn = () => {
 
     mainTable.addColumn();
-    mainTable.updateInterface();
+    mainTable.updateInterface(["Header","Body"]);
 };
 
 events.click.addRow = () => {
     mainTable.addRow();
-    mainTable.updateInterface();
+    mainTable.updateInterface(["Body"]);
 };
 
 events.click.removeColumn = (source) => {
 
     mainTable.removeColumn(source.dataset.column);
-    mainTable.updateInterface();
+    mainTable.updateInterface(["Header","Body"]);
 
 };
 
 events.click.removeRow = (source) => {
     mainTable.removeRow(source.dataset.row);
-    mainTable.updateInterface();
+    mainTable.updateInterface(["Body"]);
 };
 
 events.change.syncHeading = (source) => {
 
     let location = source.dataset.location.split(",");
     mainTable.updateTableHead(location[1], source.value);
-    mainTable.updateInterface();
+    mainTable.updateInterface(["Header"]);
 }
 
 events.change.syncValue = (source) => {
@@ -48,7 +48,7 @@ events.change.syncValue = (source) => {
 
 events.keyup.syncCaption = (source) =>{
     mainTable.caption = source.value;
-    mainTable.updateInterface();
+    mainTable.updateInterface(["Caption"]);
 }
 
 events.click.getHtmlCode = (source) =>{
