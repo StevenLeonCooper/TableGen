@@ -19,6 +19,7 @@ class SimpleTable {
         this.tableBody = [
             ["value"]
         ];
+        this.defaultNewValue = "New Value";
     }
 
     get element() {
@@ -46,14 +47,14 @@ class SimpleTable {
     addColumn() {
         this.tableHeading.push("New Heading");
         this.tableBody.forEach((item, index) => {
-            item.push("New Value");
+            item.push(this.defaultNewValue);
         });
     }
     addRow() {
         let newRow = [];
 
         this.tableHeading.forEach((item, idex) => {
-            newRow.push("New Value");
+            newRow.push(this.defaultNewValue);
         });
 
         this.tableBody.push(newRow);

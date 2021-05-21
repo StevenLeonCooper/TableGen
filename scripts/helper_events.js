@@ -70,3 +70,7 @@ events.click.getHtmlCode = (source) => {
 events.click.previewTable = () => {
     UI.modal(mainTable.htmlOutput);
 };
+
+events.keyup.syncDefaultValue = (source)=>{
+    mainTable.defaultNewValue = source.value;
+};
