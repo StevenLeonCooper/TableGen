@@ -1,73 +1,57 @@
 import mustache from "./libs/mustache.js";
 
-import {pageContext} from "./app.js";
+import { UI } from "./helper_ui.js";
 
-import {UI} from "./helper_ui.js";
+import { mainTable } from "./app.js";
 
 export const events = {
     click: {},
-    change: {}
+    change: {},
+    keyup: {}
 };
 
-events.click.addRow = (source, e) =>{
-    
+events.click.addColumn = () => {
+
+    mainTable.addColumn();
+    mainTable.updateInterface();
 };
 
-events.click.addColumn = (source, e) => {
-
-    pageContext.columnCount++;
-
-    let newData = mustache.render(pageContext.dataTemplate, pageContext);
-
-    let newHeader = newData.replace("td>","th>").replace("<td","<th");
-
-    let headRow = document.querySelector("#out_thead tr");
-
-    let bodyRows = document.querySelectorAll("#out_tbody tr");
-
-    headRow.innerHTML = headRow.innerHTML + newHeader;
-
-    bodyRows.forEach((el)=>{
-        el.innerHTML = el.innerHTML + newData;
-    });
-
-    pageContext.updateRows(newData);
-
-    console.log(pageContext);
+events.click.addRow = () => {
+    mainTable.addRow();
+    mainTable.updateInterface();
 };
 
-events.click.addTableData = (source, e) => {
+events.click.removeColumn = (source) => {
 
-    
-};
-
-events.click.deleteTableData = (source, e) => {
-    //TODO: Make this more specific so it truly only deletes the correct element.
-    // source.parentNode.parentNode.removeChild(source.parentNode);
-
-    let col = source.dataset.col;
-
-    if(col == 1) {
-        UI.alert("Cannot Delete Column 1");
-        return false;
-    }
-
-    let query = `[data-index='${col}']`;
-
-    document.querySelectorAll(query).forEach((target)=>{
-
-        target.parentElement.removeChild(target);
-    });
-
-    pageContext.columnCount--;
-
-    pageContext.rows.splice(col,1);
-
-    pageContext.updateRows();
-
+    mainTable.removeColumn(source.dataset.column);
+    mainTable.updateInterface();
 
 };
 
-events.click.deleteRow = (source,e)=>{
-    let t = UI;
+events.click.removeRow = (source) => {
+    mainTable.removeRow(source.dataset.row);
+    mainTable.updateInterface();
+};
+
+events.change.syncHeading = (source) => {
+
+    let location = source.dataset.location.split(",");
+    mainTable.updateTableHead(location[1], source.value);
+    mainTable.updateInterface();
+}
+
+events.change.syncValue = (source) => {
+    let location = source.dataset.location.split(",");
+    mainTable.updateTableBody(location[0], location[1], source.value);
+    mainTable.updateInterface();
+}
+
+events.keyup.syncCaption = (source) =>{
+    mainTable.caption = source.value;
+    mainTable.updateInterface();
+}
+
+events.click.getHtmlCode = (source) =>{
+  let output = `<textarea class='embed'>${mainTable.htmlOutput}</textarea>`;
+  UI.modal(output);
 };

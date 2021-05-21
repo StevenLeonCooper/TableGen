@@ -19,6 +19,12 @@
             font-weight: bold;
             background-color: #999;
         }
+
+        .embed{
+            width:400px;
+            height: 250px;
+            margin: 2px;
+        }
     </style>
 </head>
 
@@ -30,49 +36,33 @@
             <h2>Table Head</h2>
             <label for="TableCaptionControl">Caption:</label>
             <input type="text" id="TableCaptionControl" maxlength="200"
-                data-keyup="replace: textContent of #out_caption with value">
+                data-keyup="syncCaption">
             <hr>
         </section>
         <section id="TableBodySettings">
             <h2>Output Table</h2>
-            <button type="button" id="InsertRowButton" data-click="insert: innerHTML of {#out_tbody} with template">Add Row</button>
+            <button type="button" id="InsertRowButton" data-click="addRow">Add Row</button>
             <button type="button" id="InsertColumnButton" data-click="addColumn">Add Column</button>
-            <!-- Unfortunately the <template> tag is incompatible with mustache.js because it enforces HTML validation before export-->
-            <!-- We have to revert to <script> tags so the innerHTML stays as-is & doesn't get messed with. -->
-            <script type="template" id="NewRowTemplate" data-for="InsertRowButton">
-                <tr>
-                    {{{rowTemplate}}}
-                </tr>
-            </script>
+            <button type="button" id="GetHtmlButton" data-click="getHtmlCode">Get HTML Code</button>
             <hr>
-            <div id="MainTable">&nbsp;</div>
+            <div id="MainTable">
+                <table id="out_table">
+                    <caption id="out_caption">&nbsp;</caption>
+                    <thead id="out_thead">
+                    </thead>
+                    <tbody id="out_tbody">
+                    </tbody>
+                </table>
+            </div>
             <hr>
         </section>
     </div>
-    <script type="template" id="TableDataTemplate">
-        <td data-index="{{columnCount}}">
-            <button data-col={{columnCount}} class="del-col" data-click="deleteTableData">-</button>
-            <input data-col={{columnCount}} type="text" size="10" value="In Column {{columnCount}}">
-            <button data-col={{columnCount}} class="add-col" data-click="addTableData">+</button>
+    <script type="template" id="TdTemplate" class="td" data-template-for="MainTable">
+        <td data-index="{{column}}">
+            <button data-column="{{column}}" class="del-col" data-click="removeColumn">-</button>
+            <input data-location="{{row}},{{column}}" data-change="sync{{type}}" type="text" size="10" value="{{value}}">
+            <button data-column="{{column}}" class="add-col" data-click="addColumn">+</button>
         </td>
-    </script>
-    <script type="template" id="MainTableTemplate" data-for="PageBody">
-        <table id="out_table">
-            <caption id="out_caption">&nbsp;</caption>
-            <thead id="out_thead">
-                <tr>
-                    {{#toTH}}
-                        {{{dataTemplate}}}
-                    {{/toTH}}
-                </tr>
-            </thead>
-            <tbody id="out_tbody">
-                <tr>
-                    {{{dataTemplate}}}
-                </tr>
-            </tbody>
-            <tfoot></tfoot>
-        </table>
     </script>
     <script>var exports = {};</script>
     <script type="module" src="scripts/app.js"></script>

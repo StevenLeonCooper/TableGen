@@ -4,12 +4,14 @@ import { appBindings, binding } from './helper_bindings.js';
 import { events } from './helper_events.js';
 
 import { UI } from './helper_ui.js';
+
 import mustache from './libs/mustache.js';
 
+export const pageContext = {};
 
 class SimpleTable {
-    constructor(name) {
-        this.name = name;
+    constructor(tableId) {
+        this.tableId = tableId;
         this.caption = "Table Caption";
         this.tableHeading = [
             "heading"
@@ -19,12 +21,26 @@ class SimpleTable {
         ];
     }
 
-    getColumnCount() {
+    get element() {
+        return document.getElementById(this.tableId);
+    }
+
+    get columns() {
         return this.tableHeading.length;
     }
 
-    getRowCount() {
+    get rows() {
         return this.tableBody.length;
+    }
+
+    get tdTemplate() {
+        let query = `.td[data-template-for="${this.tableId}"]`;
+        let template = document.querySelector(query)?.innerHTML;
+        return template;
+    }
+
+    get thTemplate() {
+        return this.tdTemplate.replace("<td", "<th").replace("td>", "th>");
     }
 
     addColumn() {
@@ -39,7 +55,10 @@ class SimpleTable {
         this.tableHeading.forEach((item, idex) => {
             newRow.push("New Value");
         });
+
         this.tableBody.push(newRow);
+
+        debugger;
     }
 
     removeColumn(index) {
@@ -53,7 +72,7 @@ class SimpleTable {
         this.tableBody.splice(index, 1);
     }
 
-    getHtml() {
+    get htmlOutput() {
         let headerHtml = this.tableHeading.map(value => `<th>${value}</th>`).join(' ');
         let bodyHtml = "";
         this.tableBody.forEach((item) => {
@@ -69,6 +88,34 @@ class SimpleTable {
         return outHtml;
     }
 
+    updateInterface() {
+
+        let headerHtml = this.tableHeading.map((item, index) => {
+            let context = { column: index, row: 0, value: item, type: "Heading" };
+            return mustache.render(this.thTemplate, context);
+        }).join("");
+
+        let bodyHtml = "";
+
+        this.tableBody.forEach((row, rowIndex) => {
+            bodyHtml += "<tr>";
+            bodyHtml += row.map((item, index) => {
+                let context = { column: index, row: rowIndex, value: item, type: "Value" };
+                return mustache.render(this.tdTemplate, context);
+            }).join("");
+            bodyHtml += "</tr>";
+        });
+        this.element.querySelector("caption").textContent = this.caption;
+        this.element.querySelector("thead").innerHTML = headerHtml;
+        this.element.querySelector("tbody").innerHTML = bodyHtml;
+    }
+
+    updateTableHead(index, value) {
+        if (this.tableHeading?.[index]) {
+            this.tableHeading[index] = value;
+        }
+    }
+
     updateTableBody(row, column, value) {
         if (this.tableBody?.[row]?.[column]) {
             this.tableBody[row][column] = value;
@@ -77,64 +124,15 @@ class SimpleTable {
 
 }
 
-export const mainTable = new SimpleTable("Main");
-window._mainTable = mainTable;
+export const mainTable = new SimpleTable("MainTable");
 
-class context {
-
-    constructor() {
-
-        this.columnCount = 1;
-        this.rowCount = 1;
-        this.headerTemplate = "";
-        this.rowTemplate = "";
-        this.dataTemplate = "";
-        this.columns = [];
-        this.rows = [];
-        this.toTH = () => {
-            return function (object, render) {
-                var rendered = render(object);
-                rendered = rendered.replace("td>", "th>").replace("<td", "<th");
-                return rendered;
-            };
-        }
-    }
-    updateColumns = (data) => {
-        this.columns.push(data);
-    }
-
-    updateRows = (data) => {
-        if (data) { this.rows.push(data); }
-        this.rowTemplate = this.rows.join("<!--|-->");
-    }
-};
-
-export const pageContext = new context();
-
-
-function setupRowTemplate(newData) {
-    if (pageContext.rowTemplate.length == 0) {
-        newData = `${newData}`;
-        pageContext.updateRows(newData);
-    }
-};
-
-function executeBinding(source, type) {
-
-    let bindingString = source.dataset[type];
-
-    if (!bindingString) return false;
-
-    if (!bindingString.includes(":")) return false;
-
-    let targetBinding = appBindings[source.id || source.name] ?? new binding(source, bindingString);
-
-    targetBinding.update();
-}
+window._mainTable = mainTable; // Just for debugging
 
 document.body.addEventListener("keyup", (e) => {
 
     let source = e.target;
+
+    events.keyup[source.dataset.keyup]?.(source,e);
 
     executeBinding(source, "keyup");
 });
@@ -145,7 +143,7 @@ document.body.addEventListener("change", (e) => {
 
     events.change[source.dataset.change]?.(source, e);
 
-    executeBinding(source, "change");
+    //executeBinding(source, "change");
 });
 
 document.body.addEventListener("click", (e) => {
@@ -154,28 +152,13 @@ document.body.addEventListener("click", (e) => {
 
     events.click[source.dataset.click]?.(source, e);
 
-    executeBinding(source, "click");
+    //executeBinding(source, "click");
 });
 
 document.body.onload = () => {
 
-    let source = document.body;
-
-    let dataTemplate = document.getElementById("TableDataTemplate").innerHTML;
-
-    let dataTemplateFirstRun = mustache.render(dataTemplate, pageContext);
-
-    pageContext.dataTemplate = dataTemplateFirstRun;
-
-    let mainTableHtml = UI.get.template(source);
-
-    pageContext.dataTemplate = dataTemplate;
-
-    setupRowTemplate(dataTemplateFirstRun);
-
-    let mainTable = document.getElementById("MainTable");
-
-    UI.set.innerHTML(mainTable, mainTableHtml);
+    mainTable.updateInterface();
+   
 };
 
 window._pageContext = pageContext;
