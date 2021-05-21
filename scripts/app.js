@@ -1,9 +1,9 @@
 
-import { appBindings, binding } from './helper_bindings.js';
-
-import { events } from './helper_events.js';
+// import { appBindings, binding } from './helper_bindings.js';
 
 import { UI } from './helper_ui.js';
+
+import { events } from './helper_events.js';
 
 import mustache from './libs/mustache.js';
 
@@ -93,7 +93,7 @@ class SimpleTable {
 
 
     updateInterface(type) {
-        console.time("Update Interface");
+        let startBench = performance.now();
         // This ensures we only mess with the DOM elements we NEED to mess with. 
         // It dramatically improves performance when the table gets large,
         // Especially for something simple like the caption or headings. 
@@ -136,7 +136,12 @@ class SimpleTable {
             method.bind(this).call();
         }
 
-        console.timeEnd("Update Interface");
+        let endBench = performance.now();
+        let benchResult = endBench - startBench;
+        console.log(`Interface Update took ${benchResult} ms.`);
+        if(benchResult > 50){
+            UI.alert("The performance of this application is lower than normal. This table may be too large.");
+        }
     }
 
     updateTableHead(index, value) {

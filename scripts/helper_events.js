@@ -1,5 +1,3 @@
-import mustache from "./libs/mustache.js";
-
 import { UI } from "./helper_ui.js";
 
 import { mainTable } from "./app.js";
