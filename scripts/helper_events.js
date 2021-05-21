@@ -12,27 +12,34 @@ export const events = {
 
 events.click.addColumn = () => {
 
+    if (mainTable.columns >= 10) {
+        UI.alert("Having more than 10 columns is not recommended.");
+    }
+
     mainTable.addColumn();
-    mainTable.updateInterface(["Header","Body"]);
+    mainTable.updateInterface(["Header", "Body"]);
 };
 
 events.click.addRow = () => {
+    if (mainTable.rows >= 30) {
+        UI.alert("Tables this large can be difficult to read. Consider using multiple tables instead.");
+    }
     mainTable.addRow();
     mainTable.updateInterface(["Body"]);
 };
 
 events.click.removeColumn = (source) => {
-    if(mainTable.columns === 1){
+    if (mainTable.columns === 1) {
         return UI.warning("You must have at least 1 column.");
     }
 
     mainTable.removeColumn(source.dataset.column);
-    mainTable.updateInterface(["Header","Body"]);
+    mainTable.updateInterface(["Header", "Body"]);
 
 };
 
 events.click.removeRow = (source) => {
-    if(mainTable.rows === 1){
+    if (mainTable.rows === 1) {
         return UI.warning("You must have at least 1 row.");
     }
     mainTable.removeRow(source.dataset.row);
@@ -52,16 +59,16 @@ events.change.syncValue = (source) => {
     mainTable.updateInterface();
 }
 
-events.keyup.syncCaption = (source) =>{
+events.keyup.syncCaption = (source) => {
     mainTable.caption = source.value;
     mainTable.updateInterface(["Caption"]);
 }
 
-events.click.getHtmlCode = (source) =>{
-  let output = `<textarea class='embed'>${mainTable.htmlOutput}</textarea>`;
-  UI.modal(output);
+events.click.getHtmlCode = (source) => {
+    let output = `<textarea class='embed'>${mainTable.htmlOutput}</textarea>`;
+    UI.modal(output);
 };
 
-events.click.previewTable = () =>{
+events.click.previewTable = () => {
     UI.modal(mainTable.htmlOutput);
 };
