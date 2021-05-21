@@ -103,7 +103,7 @@ class SimpleTable {
             },
             Header: () => {
                 let headerHtml = this.tableHeading.map((item, index) => {
-                    let context = { column: index, row: 0, value: item, type: "Heading" };
+                    let context = { column: index, row: 0, value: item, type: "Heading", first: false };
                     return mustache.render(this.thTemplate, context);
                 }).join("");
 
@@ -116,6 +116,7 @@ class SimpleTable {
                     bodyHtml += "<tr>";
                     bodyHtml += row.map((item, index) => {
                         let context = { column: index, row: rowIndex, value: item, type: "Value" };
+                        context.first = index == 0 ? true: false;
                         return mustache.render(this.tdTemplate, context);
                     }).join("");
                     bodyHtml += "</tr>";

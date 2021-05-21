@@ -22,6 +22,9 @@ events.click.addRow = () => {
 };
 
 events.click.removeColumn = (source) => {
+    if(mainTable.columns === 1){
+        return UI.warning("You must have at least 1 column.");
+    }
 
     mainTable.removeColumn(source.dataset.column);
     mainTable.updateInterface(["Header","Body"]);
@@ -29,6 +32,9 @@ events.click.removeColumn = (source) => {
 };
 
 events.click.removeRow = (source) => {
+    if(mainTable.rows === 1){
+        return UI.warning("You must have at least 1 row.");
+    }
     mainTable.removeRow(source.dataset.row);
     mainTable.updateInterface(["Body"]);
 };

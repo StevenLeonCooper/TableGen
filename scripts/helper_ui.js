@@ -80,5 +80,23 @@ UI.alert = (message)=>{
     let template = `<div id="Alert">${message}<hr><button data-click="closeModal">Okay</button></div>`;
 
     UI.modal(template);
+    
 };
 
+UI.warning = (message)=>{
+
+    let template = `<div id="Warning">${message}<hr><button data-click="closeModal">Okay</button></div>`;
+
+    UI.modal(template);
+
+    return false;
+}
+
+// Mustache
+
+// let exampleFunc =  function () {
+//     return function (object, render) {
+//         var rendered = render(object);
+//          return rendered;          
+//     };
+// },

@@ -41,7 +41,7 @@
         <section id="TableHeadSettings">
             <h2>Table Head</h2>
             <label for="TableCaptionControl">Caption:</label>
-            <input type="text" id="TableCaptionControl" maxlength="200" data-keyup="syncCaption">>
+            <input type="text" id="TableCaptionControl" maxlength="200" data-keyup="syncCaption">
             <hr>
         </section>
         <section id="TableBodySettings">
@@ -65,6 +65,9 @@
     </div>
     <script type="template" id="TdTemplate" class="td" data-template-for="MainTable">
         <td data-index="{{column}}">
+            {{#first}}
+            <button title="Delete Row {{row}}" data-row="{{row}}" class="del-row" data-click="removeRow">!!</button>
+            {{/first}}
             <button title="Delete Column {{column}}" data-column="{{column}}" class="del-col" data-click="removeColumn">-</button>
             <input data-location="{{row}},{{column}}" data-change="sync{{type}}" type="text" size="10" value="{{value}}">
             <button title="Add Column After Column {{column}}" data-column="{{column}}" class="add-col" data-click="addColumn">+</button>
