@@ -18,8 +18,6 @@ events.click.addColumn = (source) => {
 
     index = (index != null) ? parseInt(index) + 1 : null;
 
-    debugger;
-
     mainTable.addColumn(index);
 
     mainTable.updateInterface(["Header", "Body"]);
