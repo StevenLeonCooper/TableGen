@@ -73,7 +73,7 @@ events.keyup.syncCaption = (source) => {
     mainTable.updateInterface(["Caption"]);
 }
 
-events.click.getHtmlCode = (source) => {
+events.click.getHtmlCode = () => {
     let output = `<textarea class='embed'>${mainTable.htmlOutput}</textarea>`;
     UI.modal(output);
 };
@@ -82,6 +82,6 @@ events.click.previewTable = () => {
     UI.modal(mainTable.htmlOutput);
 };
 
-events.keyup.syncDefaultValue = (source)=>{
+events.keyup.syncDefaultValue = (source) => {
     mainTable.defaultNewValue = source.value;
 };
