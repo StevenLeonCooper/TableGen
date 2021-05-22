@@ -8,21 +8,34 @@ export const events = {
     keyup: {}
 };
 
-events.click.addColumn = () => {
+events.click.addColumn = (source) => {
 
     if (mainTable.columns >= 10) {
         UI.alert("Having more than 10 columns is not recommended.");
     }
 
-    mainTable.addColumn();
+    let index = (source.dataset.column ?? null);
+
+    index = (index != null) ? parseInt(index) + 1 : null;
+
+    debugger;
+
+    mainTable.addColumn(index);
+
     mainTable.updateInterface(["Header", "Body"]);
 };
 
-events.click.addRow = () => {
+events.click.addRow = (source) => {
     if (mainTable.rows >= 30) {
         UI.alert("Tables this large can be difficult to read. Consider using multiple tables instead.");
     }
-    mainTable.addRow();
+
+    let index = (source.dataset.row ?? null);
+
+    index = (index != null) ? parseInt(index) + 1 : null;
+
+    mainTable.addRow(index);
+
     mainTable.updateInterface(["Body"]);
 };
 

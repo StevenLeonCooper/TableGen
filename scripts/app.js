@@ -58,23 +58,32 @@ class SimpleTable {
     }
 
     get thTemplate() {
-        return this.tdTemplate.replace("<td", "<th").replace("td>", "th>");
+        let query = `.th[data-template-for="${this.tableId}"]`;
+        let template = document.querySelector(query)?.innerHTML;
+        return template;
     }
 
-    addColumn() {
-        this.tableHeading.push("New Heading");
+    addColumn(insertIndex) {
+
+        insertIndex = insertIndex ?? this.tableHeading.length;
+
+        this.tableHeading.splice(insertIndex, 0, "New Heading");
+
         this.tableBody.forEach((item, index) => {
-            item.push(this.defaultNewValue);
+            // item.push(this.defaultNewValue);
+            item.splice(insertIndex, 0, this.defaultNewValue)
         });
     }
-    addRow() {
+    addRow(insertIndex) {
+        insertIndex = insertIndex ?? this.tableBody.length;
+
         let newRow = [];
 
         this.tableHeading.forEach((item, idex) => {
             newRow.push(this.defaultNewValue);
         });
 
-        this.tableBody.push(newRow);
+        this.tableBody.splice(insertIndex, 0, newRow);
     }
 
     removeColumn(index) {
@@ -108,7 +117,9 @@ class SimpleTable {
 
         return outHtml;
     }
-
+    /**
+     * WARNING: Using _functions may have 
+     */
     _uiCaption() {
         this.element.querySelector("caption").textContent = this.caption;
     }

@@ -18,7 +18,7 @@
 
         table {
             table-layout: fixed;
-            min-width: 400px;
+            min-width: 100px;
         }
 
         th {
@@ -26,10 +26,23 @@
             background-color: #CCC;
         }
 
+
         .embed {
             width: 400px;
             height: 250px;
             margin: 2px;
+        }
+
+        .add-row {
+            width: 100%;
+        }
+
+        td:not(.first){
+            vertical-align:middle;
+            padding:5px;
+        }
+        td:not(.first) input {
+            width:calc(100% - 10px);
         }
     </style>
 </head>
@@ -42,19 +55,21 @@
             <h2>Table Head</h2>
             <p>
                 <label for="TableCaptionControl">Caption:</label>
-                <input type="text" id="TableCaptionControl" maxlength="200" data-keyup="syncCaption" value="Table Caption">
+                <input type="text" id="TableCaptionControl" maxlength="200" data-keyup="syncCaption"
+                    value="Table Caption">
             </p>
             <p>
 
                 <label for="TableDefaultValueControl">Default Cell Value:</label>
-                <input type="text" id="TableDefaultValueControl" maxlength="200" data-keyup="syncDefaultValue" value="New Value">
+                <input type="text" id="TableDefaultValueControl" maxlength="200" data-keyup="syncDefaultValue"
+                    value="New Value">
             </p>
             <hr>
         </section>
         <section id="TableBodySettings">
             <h2>Output Table</h2>
-            <button type="button" id="InsertRowButton" data-click="addRow">Add Row</button>
-            <button type="button" id="InsertColumnButton" data-click="addColumn">Add Column</button>
+            <button type="button" id="InsertRowButton" data-click="addRow">Add Row at End</button>
+            <button type="button" id="InsertColumnButton" data-click="addColumn">Add Column at End</button>
             <button type="button" id="GetHtmlButton" data-click="getHtmlCode">Get HTML Code</button>
             <button type="button" id="GetHtmlButton" data-click="previewTable">Preview Table</button>
             <hr>
@@ -70,14 +85,23 @@
             <hr>
         </section>
     </div>
-    <script type="template" id="TdTemplate" class="td" data-template-for="MainTable">
-        <td data-index="{{column}}">
-            {{#first}}
-            <button title="Delete Row {{row}}" data-row="{{row}}" class="del-row" data-click="removeRow">!!</button>
-            {{/first}}
+    <script type="template" id="ThTemplate" class="th" data-template-for="MainTable">
+        <th data-index="{{column}}">
             <button title="Delete Column {{column}}" data-column="{{column}}" class="del-col" data-click="removeColumn">-</button>
             <input data-location="{{row}},{{column}}" data-change="sync{{type}}" type="text" size="10" value="{{value}}">
             <button title="Add Column After Column {{column}}" data-column="{{column}}" class="add-col" data-click="addColumn">+</button>
+        </th>
+    </script>
+    <script type="template" id="TdTemplate" class="td" data-template-for="MainTable">
+        <td data-index="{{column}}" class="{{#first}}first{{/first}}">
+            {{#first}}
+            <button title="Delete Row at {{row}}" data-row="{{row}}" class="del-row" data-click="removeRow">!!</button>
+            {{/first}}
+            <input data-location="{{row}},{{column}}" data-change="sync{{type}}" type="text" size="10" value="{{value}}">
+            <br>
+            {{#first}}
+            <button title="Add Row at {{row}}" data-row="{{row}}" class="add-row" data-click="addRow">Add Row</button>
+            {{/first}}
         </td>
     </script>
     <script>var exports = {};</script>
