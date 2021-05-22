@@ -54,7 +54,7 @@ events.change.syncHeading = (source) => {
 events.change.syncValue = (source) => {
     let location = source.dataset.location.split(",");
     mainTable.updateTableBody(location[0], location[1], source.value);
-    mainTable.updateInterface();
+    // No need to update interface, these are already IN the interface. 
 }
 
 events.keyup.syncCaption = (source) => {

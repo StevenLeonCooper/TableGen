@@ -9,6 +9,23 @@ import mustache from './libs/mustache.js';
 
 export const pageContext = {};
 
+class Benchmark {
+    constructor(name) {
+        this.name = name;
+        this.start = performance.now();
+        this.result = 0;
+    }
+
+    stop() {
+        this.result = performance.now() - this.start;
+        return this;
+    }
+
+    get detailedResults() {
+        return `Task "${this.name}" executed in ${this.result} ms.`;
+    }
+}
+
 class SimpleTable {
     constructor(tableId) {
         this.tableId = tableId;
@@ -78,7 +95,7 @@ class SimpleTable {
             bodyHtml += ("\n      <tr>" + item.map(value => `\n         <td>${value}</td>`).join(' ') + "\n     </tr>");
         });
 
-        let outHtml =` 
+        let outHtml = ` 
 <table>
     <caption>${this.caption}</caption>
     <thead>
@@ -92,57 +109,53 @@ class SimpleTable {
         return outHtml;
     }
 
+    _uiCaption() {
+        this.element.querySelector("caption").textContent = this.caption;
+    }
 
-    updateInterface(type) {
-        let startBench = performance.now();
-        // This ensures we only mess with the DOM elements we NEED to mess with. 
-        // It dramatically improves performance when the table gets large,
-        // Especially for something simple like the caption or headings. 
-        const update = {
-            Caption: () => {
-                this.element.querySelector("caption").textContent = this.caption;
-            },
-            Header: () => {
-                let headerHtml = this.tableHeading.map((item, index) => {
-                    let context = { column: index, row: 0, value: item, type: "Heading", first: false };
-                    return mustache.render(this.thTemplate, context);
-                }).join("");
+    _uiHeader() {
+        let headerHtml = this.tableHeading.map((item, index) => {
+            let context = { column: index, row: 0, value: item, type: "Heading", first: false };
+            return mustache.render(this.thTemplate, context);
+        }).join("");
 
-                this.element.querySelector("thead").innerHTML = headerHtml;
-            },
-            Body: () => {
-                let bodyHtml = "";
+        this.element.querySelector("thead").innerHTML = headerHtml;
+    }
 
-                this.tableBody.forEach((row, rowIndex) => {
-                    bodyHtml += "<tr>";
-                    bodyHtml += row.map((item, index) => {
-                        let context = { column: index, row: rowIndex, value: item, type: "Value" };
-                        context.first = index == 0 ? true: false;
-                        return mustache.render(this.tdTemplate, context);
-                    }).join("");
-                    bodyHtml += "</tr>";
-                });
+    _uiBody() {
+        let bodyHtml = "";
 
-                this.element.querySelector("tbody").innerHTML = bodyHtml;
-            }
-        };
+        this.tableBody.forEach((row, rowIndex) => {
+            bodyHtml += "<tr>";
+            bodyHtml += row.map((item, index) => {
+                let context = { column: index, row: rowIndex, value: item, type: "Value" };
+                context.first = index == 0 ? true : false;
+                return mustache.render(this.tdTemplate, context);
+            }).join("");
+            bodyHtml += "</tr>";
+        });
+
+        this.element.querySelector("tbody").innerHTML = bodyHtml;
+    }
+
+    updateInterface(type, location) {
+        let bench = new Benchmark("Update UI");
 
         type = type ?? ["Caption", "Header", "Body"];
 
         let i = 0, len = type.length;
 
-        for(i; i < len; i++){
-            let section = type?.[i];
-            let method = update?.[section];
+        for (i; i < len; i++) {
+            let section = `_ui${type?.[i]}`;
+            let method = this?.[section];
             method.bind(this).call();
         }
 
-        let endBench = performance.now();
-        let benchResult = endBench - startBench;
-        console.log(`Interface Update took ${benchResult} ms.`);
-        if(benchResult > 50){
+        console.log(bench.stop().detailedResults);
+        if (bench.result > 50) {
             UI.alert("The performance of this application is lower than normal. This table may be too large.");
         }
+
     }
 
     updateTableHead(index, value) {

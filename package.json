@@ -15,7 +15,7 @@
   },
   "dependencies": {},
   "browserslist": [
-    "IE 9"
+    "Edge 17"
   ],
   "resolutions": {
     "@babel/parser": "7.3.0"
