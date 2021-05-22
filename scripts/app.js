@@ -30,13 +30,10 @@ class SimpleTable {
     constructor(tableId) {
         this.tableId = tableId;
         this.caption = "Table Caption";
-        this.tableHeading = [
-            "heading"
-        ];
-        this.tableBody = [
-            ["value"]
-        ];
+        this.tableHeading = ["Heading"];
+        this.tableBody = [["Value"]];
         this.defaultNewValue = "New Value";
+        this.templates = {};
     }
 
     get element() {
@@ -52,14 +49,18 @@ class SimpleTable {
     }
 
     get tdTemplate() {
+        if (this.templates.td) return this.templates.td;
         let query = `.td[data-template-for="${this.tableId}"]`;
         let template = document.querySelector(query)?.innerHTML;
+        this.templates.td = template;
         return template;
     }
 
     get thTemplate() {
+        if (this.templates.th) return this.templates.th;
         let query = `.th[data-template-for="${this.tableId}"]`;
         let template = document.querySelector(query)?.innerHTML;
+        this.templates.th = template;
         return template;
     }
 
