@@ -7,43 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/tablegen.css">
     <style>
-        table,
-        tr,
-        th,
-        td {
-            border: 1px solid black;
-            padding: 2px;
-            background-color: #FFF;
-        }
-
-        table {
-            table-layout: fixed;
-            min-width: 100px;
-        }
-
-        th {
-            font-weight: bold;
-            background-color: #CCC;
-        }
 
 
-        .embed {
-            width: 400px;
-            height: 250px;
-            margin: 2px;
-        }
-
-        .add-row {
-            width: 100%;
-        }
-
-        td:not(.first){
-            vertical-align:middle;
-            padding:5px;
-        }
-        td:not(.first) input {
-            width:calc(100% - 10px);
-        }
     </style>
 </head>
 
@@ -85,6 +50,14 @@
             <hr>
         </section>
     </div>
+    <script type="template" id="RowTemplate" class="row" data-template-for="MainTable">
+        <tr>
+            {{{rowContent}}}
+        </tr>
+        <tr class="ui-add-row">
+            <td colspan="{{columns}}"><button title="Add Row at {{row}}" data-row="{{row}}" class="add-row" data-click="addRow">Insert Row After {{nextRow}}</button></td>
+        </tr>
+    </script>
     <script type="template" id="ThTemplate" class="th" data-template-for="MainTable">
         <th data-index="{{column}}">
             <button title="Delete Column {{column}}" data-column="{{column}}" class="del-col" data-click="removeColumn">-</button>
@@ -98,10 +71,6 @@
             <button title="Delete Row at {{row}}" data-row="{{row}}" class="del-row" data-click="removeRow">!!</button>
             {{/first}}
             <input data-location="{{row}},{{column}}" data-change="sync{{type}}" type="text" size="10" value="{{value}}">
-            <br>
-            {{#first}}
-            <button title="Add Row at {{row}}" data-row="{{row}}" class="add-row" data-click="addRow">Add Row</button>
-            {{/first}}
         </td>
     </script>
     <script>var exports = {};</script>

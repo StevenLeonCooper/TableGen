@@ -2,7 +2,7 @@ import mustache from './libs/mustache.js';
 
 import { UI } from './helper_ui.js';
 
-import {Benchmark} from "./class_Benchmark.js";
+import { Benchmark } from "./class_Benchmark.js";
 
 export class SimpleTable {
     constructor(tableId) {
@@ -39,6 +39,14 @@ export class SimpleTable {
         let query = `.th[data-template-for="${this.tableId}"]`;
         let template = document.querySelector(query)?.innerHTML;
         this.templates.th = template;
+        return template;
+    }
+
+    get rowTemplate() {
+        if (this.templates.row) return this.templates.row;
+        let query = `.row[data-template-for="${this.tableId}"]`;
+        let template = document.querySelector(query)?.innerHTML;
+        this.templates.row = template;
         return template;
     }
 
@@ -108,9 +116,14 @@ export class SimpleTable {
      */
     _uiHeader() {
         let headerHtml = this.tableHeading.map((item, index) => {
+
             let context = { column: index, row: 0, value: item, type: "Heading", first: false };
+
             return mustache.render(this.thTemplate, context);
+
         }).join("");
+
+        debugger;
 
         this.element.querySelector("thead").innerHTML = headerHtml;
     }
@@ -120,15 +133,25 @@ export class SimpleTable {
      */
     _uiBody() {
         let bodyHtml = "";
+        let columnCount = this.columns + 1;
 
-        this.tableBody.forEach((row, rowIndex) => {
-            bodyHtml += "<tr>";
-            bodyHtml += row.map((item, index) => {
-                let context = { column: index, row: rowIndex, value: item, type: "Value" };
-                context.first = index == 0 ? true : false;
-                return mustache.render(this.tdTemplate, context);
-            }).join("");
-            bodyHtml += "</tr>";
+        this.tableBody.forEach((rowItem, rowIndex) => {
+
+
+            let context = {
+                rowContent: rowItem.map((item, index) => {
+                    let context = { column: index, row: rowIndex, value: item, type: "Value" };
+                    context.first = index == 0 ? true : false;
+                    return mustache.render(this.tdTemplate, context);
+                }).join(""),
+                row: rowIndex,
+                nextRow: rowIndex + 1,
+                columns: columnCount
+            };
+
+            
+            
+            bodyHtml += mustache.render(this.rowTemplate, context);
         });
 
         this.element.querySelector("tbody").innerHTML = bodyHtml;
