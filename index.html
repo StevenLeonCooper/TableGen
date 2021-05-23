@@ -59,6 +59,11 @@
         </tr>
     </script>
     <script type="template" id="ThTemplate" class="th" data-template-for="MainTable">
+        {{#first}}
+            <th>
+                <button title="Reset Table (All data will be lost.)" data-click="resetTable">!R!</button>
+            </th>
+        {{/first}}
         <th data-index="{{column}}">
             <button title="Delete Column {{column}}" data-column="{{column}}" class="del-col" data-click="removeColumn">-</button>
             <input data-location="{{row}},{{column}}" data-change="sync{{type}}" type="text" size="10" value="{{value}}">
@@ -66,10 +71,12 @@
         </th>
     </script>
     <script type="template" id="TdTemplate" class="td" data-template-for="MainTable">
-        <td data-index="{{column}}" class="{{#first}}first{{/first}}">
-            {{#first}}
-            <button title="Delete Row at {{row}}" data-row="{{row}}" class="del-row" data-click="removeRow">!!</button>
-            {{/first}}
+        {{#first}}
+        <td rowspan="2">
+            <button title="Delete Row at {{row}}" data-row="{{row}}" class="del-row" data-click="removeRow">--</button>
+        </td>    
+        {{/first}}
+        <td data-index="{{column}}" class="{{#first}}first{{/first}}">           
             <input data-location="{{row}},{{column}}" data-change="sync{{type}}" type="text" size="10" value="{{value}}">
         </td>
     </script>

@@ -1,11 +1,21 @@
 import { UI } from "./helper_ui.js";
 
 import { mainTable } from "./app.js";
+import { SimpleTable } from "./class_SimpleTable.js";
 
 export const events = {
     click: {},
     change: {},
     keyup: {}
+};
+
+events.click.resetTable = () => {
+
+    let message = "Are you sure you want to reset the table? All data will be lost.";
+    UI.confirm(message, () => {
+        mainTable.fullReset();
+    }, null);
+
 };
 
 events.click.addColumn = (source) => {
