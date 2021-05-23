@@ -1,5 +1,14 @@
 /* Main Page CSS */
 
+:root {
+    --bg-color: #FFF;
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
 #ModalWrapper {
     position: fixed;
     top: 0;
@@ -31,7 +40,7 @@ button {
 
 table, tr, th, td {
     border: 1px solid black;
-    padding: 2px;
+    padding: 5px;
     background-color: #FFF;
 }
 
@@ -58,28 +67,39 @@ th {
 
 /* INTERFACE */
 
-td:not(.first) {
+#UI_TABLE td {
     vertical-align: middle;
     padding: 5px;
 }
 
-td:not(.first) input {
+#UI_TABLE td input {
     width: calc(100% - 10px);
 }
 
-.ui-add-row td {
+#UI_TABLE td.button-wrapper {
     padding: 0;
     border: none;
 }
 
-.ui-add-row button {
+#UI_TABLE button.add-row, #UI_TABLE button.delete-row {
     display: block;
     margin: 0 auto;
     border: none;
     padding: 1px;
     background-color: #CCC;
+    height: 100%;
+    width: 100%;
 }
 
-.ui-add-row button:hover {
+#UI_TABLE button.add-row:hover {
     background-color: #ACF;
+}
+
+#UI_TABLE button.delete-row:hover {
+    background-color: #FAA;
+    --bg-color:#F00;
+}
+
+#UI_TABLE td.delete-row {
+    height: 40px;
 }
