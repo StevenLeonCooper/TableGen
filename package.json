@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "WCAG Compliant Table Generation",
   "scripts": {
-    "start": "parcel serve ./scripts/app.js",
-    "build": "parcel build ./scripts/app.js"
+    "start": "parcel serve ./omniCMS.html",
+    "build": "parcel build --no-content-hash ./omniCMS.html --public-url ./"
   },
-  "main": "./js/index.js",
+
+  "main":"./dist/index.html",
+    
   "author": "",
   "license": "ISC",
   "devDependencies": {
