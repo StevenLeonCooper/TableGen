@@ -97,9 +97,14 @@ th {
 
 #UI_TABLE button.delete-row:hover {
     background-color: #FAA;
-    --bg-color:#F00;
+    --bg-color: #F00;
 }
 
 #UI_TABLE td.delete-row {
     height: 40px;
+}
+
+#TextInput {
+    min-width: 400px;
+    min-height: 250px;
 }

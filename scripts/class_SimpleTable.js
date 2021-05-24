@@ -50,7 +50,76 @@ export class SimpleTable {
         return template;
     }
 
-    fullReset(){
+    import(html) {
+        let workshop = document.createElement("div");
+        document.body.appendChild(workshop);
+        workshop.style.visibility = "hidden";
+        workshop.innerHTML = html;
+
+        let caption = workshop.querySelector("caption")?.textContent ?? "No Caption";
+
+        let headRow = Array.from(workshop.querySelectorAll("th")).map((item) => {
+            return item.textContent;
+        });
+
+        let colMax = 0;
+
+        let bodyRows = Array.from(workshop.querySelectorAll("tr")).map((rowItem, rowIndex) => {
+
+            let rowData = Array.from(rowItem.querySelectorAll("td"));
+
+            let newRow = rowData.map((td) => {
+                return td.textContent;
+            });
+            
+            // Assure all rows have the same number of columns.
+            colMax = (colMax < newRow.length) ? newRow.length : colMax;
+            
+            if(colMax > newRow.length){
+                let i = 0, diff = colMax - newRow.length;
+                for(i; i < diff; i++){
+                    newRow.push(this.defaultNewValue);
+                }
+            }
+            return newRow;
+        }).filter((row) => {
+            if (row.length > 0) return true;
+            return false;
+        });
+
+        {
+            // Synchronize the # of Columns between Header & Footer
+            if (headRow.length >= colMax) {
+
+                bodyRows.forEach((row) => {
+                    let diff = headRow.length - row.length;
+                    let i = 0;
+                    for (i; i < diff; i++) {
+                        row.push(this.defaultNewValue);
+                    }
+                });
+            }
+            if (headRow.length < colMax) {
+                let diff = colMax - headRow.length;
+                let i = 0;
+                for (i; i < diff; i++) {
+                    headRow.push("Heading");
+                }
+            }
+        }
+        {
+            // Cleanup DOM
+            workshop.parentElement.removeChild(workshop);
+        }
+        {
+            // Update actual data
+            this.caption = caption;
+            this.tableHeading = headRow;
+            this.tableBody = bodyRows;
+        }
+    }
+
+    fullReset() {
         this.caption = "Table Caption";
         this.tableHeading = ["Heading"];
         this.tableBody = [["Value"]];
@@ -155,8 +224,8 @@ export class SimpleTable {
                 columns: columnCount
             };
 
-            
-            
+
+
             bodyHtml += mustache.render(this.rowTemplate, context);
         });
 

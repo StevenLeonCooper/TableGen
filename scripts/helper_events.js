@@ -1,12 +1,27 @@
 import { UI } from "./helper_ui.js";
 
 import { mainTable } from "./app.js";
-import { SimpleTable } from "./class_SimpleTable.js";
 
 export const events = {
     click: {},
     change: {},
-    keyup: {}
+    keyup: {},
+    actions: {}
+};
+
+events.actions.importHtml = (html) => {
+
+    mainTable.import(html);
+    mainTable.updateInterface();
+};
+
+events.click.textInput = (source) => {
+    
+    let action = source.dataset.action;
+
+    UI.textInput(function(text){
+        events.actions[action]?.(text);
+    });
 };
 
 events.click.resetTable = () => {

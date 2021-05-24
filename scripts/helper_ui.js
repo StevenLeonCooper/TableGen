@@ -100,18 +100,38 @@ UI.confirm = (message, ifYes, ifNo) => {
                     <button data-click="confirmNo">No</button>
                     </div>`;
 
-    events.click.confirmYes = ()=>{
+    events.click.confirmYes = () => {
         closeModal();
         ifYes?.();
     };
 
-    events.click.confirmNo = ()=>{
+    events.click.confirmNo = () => {
         closeModal();
         ifNo?.();
     };
 
-    UI.modal(template);    
+    UI.modal(template);
 
+};
+
+UI.textInput = (callback) => {
+
+    let template = `<h2>Input Text</h2>
+                    <textarea id="TextInput" class="modal-input">Copy/Paste Here</textarea>
+                    <hr>
+                    <button data-click="processTextInput">Continue</button>
+                    `;
+
+    events.click.processTextInput = (e) => {
+
+        let text = document.getElementById("TextInput").value;
+
+        callback.call(e.target, text);
+
+        closeModal();
+    };
+
+    UI.modal(template);
 };
 
 

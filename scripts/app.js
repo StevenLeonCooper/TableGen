@@ -33,3 +33,9 @@ document.body.onload = () => {
 
     mainTable.updateInterface();
 };
+
+window._debug = {
+    context: pageContext,
+    mainTable: mainTable,
+    events: events
+};
