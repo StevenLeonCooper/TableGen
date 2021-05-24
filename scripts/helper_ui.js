@@ -1,8 +1,8 @@
 import mustache from "./libs/mustache.js";
 
-import {pageContext} from "./app.js";
+import { pageContext } from "./app.js";
 
-import {events} from "./helper_events.js";
+import { events } from "./helper_events.js";
 
 export const UI = {};
 
@@ -55,42 +55,64 @@ UI.add = {
     }
 }
 
-const closeModal = ()=>{
+const closeModal = () => {
     document.getElementById("ModalWrapper")?.remove();
 };
 
-UI.modal = (content)=>{
+UI.modal = (content) => {
 
     events.click.closeModal = events.click.closeModal || closeModal;
 
     let template = `<div data-click="closeModal" id="ModalContent">${content}</div>`;
-    
+
     let wrapper = document.createElement("div");
-    
-    wrapper.id="ModalWrapper";
-    
+
+    wrapper.id = "ModalWrapper";
+
     wrapper.dataset.click = "closeModal";
-    
+
     wrapper.innerHTML = template;
-    
+
     document.body.appendChild(wrapper);
 };
 
-UI.alert = (message)=>{
-    let template = `<div id="Alert">${message}<hr><button data-click="closeModal">Okay</button></div>`;
+UI.alert = (message) => {
+    let template = `<h1>Alert</h1><hr><div id="Alert">${message}<hr><button data-click="closeModal">Okay</button></div>`;
 
     UI.modal(template);
-    
+
 };
 
-UI.warning = (message)=>{
+UI.warning = (message) => {
 
-    let template = `<div id="Warning">${message}<hr><button data-click="closeModal">Okay</button></div>`;
+    let template = `<h1>Warning</h1><hr><div id="Warning">${message}<hr><button data-click="closeModal">Okay</button></div>`;
 
     UI.modal(template);
 
     return false;
-}
+};
+
+UI.confirm = (message, ifYes, ifNo) => {
+
+    let template = `<h1>Confirm</h1><hr>
+                    <div id="Confirm">${message}<hr>
+                    <button data-click="confirmYes">Yes</button>
+                    <button data-click="confirmNo">No</button>
+                    </div>`;
+
+    events.click.confirmYes = ()=>{
+        closeModal();
+        ifYes?.();
+    };
+
+    events.click.confirmNo = ()=>{
+        closeModal();
+        ifNo?.();
+    };
+
+    UI.modal(template);    
+
+};
 
 
 

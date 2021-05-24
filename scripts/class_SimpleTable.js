@@ -50,6 +50,14 @@ export class SimpleTable {
         return template;
     }
 
+    fullReset(){
+        this.caption = "Table Caption";
+        this.tableHeading = ["Heading"];
+        this.tableBody = [["Value"]];
+        this.defaultNewValue = "New Value";
+        this.updateInterface();
+    }
+
     addColumn(insertIndex) {
 
         insertIndex = insertIndex ?? this.tableHeading.length;
@@ -117,13 +125,11 @@ export class SimpleTable {
     _uiHeader() {
         let headerHtml = this.tableHeading.map((item, index) => {
 
-            let context = { column: index, row: 0, value: item, type: "Heading", first: false };
+            let context = { column: index, row: 0, value: item, type: "Heading", first: index === 0 };
 
             return mustache.render(this.thTemplate, context);
 
         }).join("");
-
-        debugger;
 
         this.element.querySelector("thead").innerHTML = headerHtml;
     }
