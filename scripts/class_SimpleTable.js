@@ -71,16 +71,10 @@ export class SimpleTable {
             let newRow = rowData.map((td) => {
                 return td.textContent;
             });
-            
+
             // Assure all rows have the same number of columns.
             colMax = (colMax < newRow.length) ? newRow.length : colMax;
-            
-            if(colMax > newRow.length){
-                let i = 0, diff = colMax - newRow.length;
-                for(i; i < diff; i++){
-                    newRow.push(this.defaultNewValue);
-                }
-            }
+
             return newRow;
         }).filter((row) => {
             if (row.length > 0) return true;
@@ -89,16 +83,16 @@ export class SimpleTable {
 
         {
             // Synchronize the # of Columns between Header & Footer
-            if (headRow.length >= colMax) {
+            colMax = (colMax < headRow.length) ? headRow.length : colMax;
 
-                bodyRows.forEach((row) => {
-                    let diff = headRow.length - row.length;
-                    let i = 0;
-                    for (i; i < diff; i++) {
-                        row.push(this.defaultNewValue);
-                    }
-                });
-            }
+            bodyRows.forEach((row) => {
+                let diff = colMax - row.length;
+                let i = 0;
+                for (i; i < diff; i++) {
+                    row.push(this.defaultNewValue);
+                }
+            });
+
             if (headRow.length < colMax) {
                 let diff = colMax - headRow.length;
                 let i = 0;
