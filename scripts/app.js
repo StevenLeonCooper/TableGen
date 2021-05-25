@@ -37,5 +37,6 @@ document.body.onload = () => {
 window._debug = {
     context: pageContext,
     mainTable: mainTable,
-    events: events
+    events: events,
+    ou: true
 };
