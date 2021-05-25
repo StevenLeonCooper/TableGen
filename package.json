@@ -7,7 +7,7 @@
     "build": "parcel build --no-content-hash ./omniCMS.html --public-url ./"
   },
 
-  "main":"./dist/index.html",
+  "main":"./ou_gadgets/TableGen/index.html",
     
   "author": "",
   "license": "ISC",
