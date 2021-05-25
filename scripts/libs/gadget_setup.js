@@ -15,7 +15,9 @@ $(document).ready(function () {
         $('#main').css({ 'font-size': gadget.getConfig('font_size') });
     });
 
-    console.log(message ?? "No Message, Setup Done.");
+    
+
+    console.log(window.message ?? "No Message, Setup Done.");
 });
 
 $(gadget).on({
