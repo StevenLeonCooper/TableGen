@@ -1,0 +1,2 @@
+$(document).ready((function(){var o;gadget.ready().then(gadget.fetch).then((function(){$("#main").css({"font-size":gadget.getConfig("font_size")})})),console.log(null!==(o=message)&&void 0!==o?o:"No Message, Setup Done.")})),$(gadget).on({expanded:function(o){console.log("Gadget expanded.")},collapsed:function(o){console.log("Gadget collapsed.")},configuration:function(o,e){console.log("New config:",e),$("#main").css({"font-size":e.font_size})},notification:function(o,e){console.log("Notification received:",e)}});
+//# sourceMappingURL=index.fe672afa.js.map

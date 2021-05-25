@@ -17,7 +17,7 @@
   },
   "dependencies": {},
   "browserslist": [
-    "Edge 17"
+    "defaults"
   ],
   "resolutions": {
     "@babel/parser": "7.3.0"
