@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "description": "WCAG Compliant Table Generation",
   "scripts": {
-    "start": "parcel serve ./omniCMS.html",
-    "build": "parcel build --no-content-hash ./omniCMS.html --public-url ./"
+    "start": "parcel serve ./app.html",
+    "build": "parcel build --no-content-hash ./app.html --public-url ./"
   },
-
-  "main":"./ou_gadgets/TableGen/index.html",
     
   "author": "",
   "license": "ISC",
