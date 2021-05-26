@@ -126,9 +126,9 @@ UI.textInput = (callback) => {
 
         let text = document.getElementById("TextInput").value;
 
-        callback.call(e.target, text);
-
         closeModal();
+
+        callback.call(e.target, text);        
     };
 
     UI.modal(template);

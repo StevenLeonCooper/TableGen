@@ -65,6 +65,10 @@ export class SimpleTable {
         workshop.style.visibility = "hidden";
         workshop.innerHTML = html;
 
+        let check = workshop.querySelector("table")?.children?.length ?? 0;
+        
+        if (check <= 0) return false;
+
         let caption = workshop.querySelector("caption")?.textContent ?? "No Caption";
 
         let headRow = Array.from(workshop.querySelectorAll("th")).map((item) => {
@@ -120,6 +124,8 @@ export class SimpleTable {
             this.tableHeading = headRow;
             this.tableBody = bodyRows;
         }
+
+        return true;
     }
 
     fullReset() {
@@ -186,10 +192,10 @@ export class SimpleTable {
     }
 
     _calcNumber(row, col) {
-        
+
         let max = this.columns * row;
 
-        return col + max;
+        return (col + max) +1;
     }
     /**
      * WARNING: _functions are not "public" & may yeild unexpected results.  

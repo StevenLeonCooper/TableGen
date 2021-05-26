@@ -25,7 +25,12 @@ events.click.addToPage = () => {
 
 events.actions.importHtml = (html) => {
 
-    mainTable.import(html);
+    let success = mainTable.import(html);
+
+    if(!success){
+        UI.warning("Could Not Find Table in Imported HTML");
+        return false;
+    }
     mainTable.updateInterface();
 };
 
