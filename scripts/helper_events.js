@@ -9,6 +9,20 @@ export const events = {
     actions: {}
 };
 
+events.click.addToPage = () => {
+
+    if(!mainTable.isValid){
+        UI.warning(mainTable.validationError);
+        return false;
+    }
+
+    let data = { detail: mainTable.htmlOutput };
+
+    const insertEvent = new CustomEvent("gadget_insert", data);
+
+    document.body.dispatchEvent(insertEvent);
+};
+
 events.actions.importHtml = (html) => {
 
     mainTable.import(html);
@@ -16,10 +30,10 @@ events.actions.importHtml = (html) => {
 };
 
 events.click.textInput = (source) => {
-    
+
     let action = source.dataset.action;
 
-    UI.textInput(function(text){
+    UI.textInput(function (text) {
         events.actions[action]?.(text);
     });
 };

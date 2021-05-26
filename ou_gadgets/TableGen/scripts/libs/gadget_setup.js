@@ -18,6 +18,8 @@ $(document).ready(function () {
     console.log(message ?? "No Message, Setup Done.");
 });
 
+
+
 $(gadget).on({
     'expanded': function (evt) {
         // This event is triggered when the user expands (makes visible) a sidebar gadget.

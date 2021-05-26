@@ -14,6 +14,15 @@ export class SimpleTable {
         this.templates = {};
     }
 
+    get isValid() {
+        if (this.caption.length <= 0) {
+            this.validationError = "The caption cannot be blank.";
+            return false;
+        }
+
+        return true;
+    }
+
     get element() {
         return document.getElementById(this.tableId);
     }
@@ -175,6 +184,13 @@ export class SimpleTable {
 
         return outHtml;
     }
+
+    _calcNumber(row, col) {
+        
+        let max = this.columns * row;
+
+        return col + max;
+    }
     /**
      * WARNING: _functions are not "public" & may yeild unexpected results.  
      */
@@ -186,9 +202,15 @@ export class SimpleTable {
      * WARNING: _functions are not "public" & may yeild unexpected results.  
      */
     _uiHeader() {
+        let num = this._calcNumber.bind(this);
         let headerHtml = this.tableHeading.map((item, index) => {
 
-            let context = { column: index, row: 0, value: item, type: "Heading", first: index === 0 };
+            let context = {
+                column: index,
+                number: num(0, index),
+                row: 0, value: item,
+                type: "Heading", first: index === 0
+            };
 
             return mustache.render(this.thTemplate, context);
 
@@ -202,14 +224,20 @@ export class SimpleTable {
      */
     _uiBody() {
         let bodyHtml = "";
-        let columnCount = this.columns + 1;
+        let columnCount = this.columns;
+        let num = this._calcNumber.bind(this);
 
         this.tableBody.forEach((rowItem, rowIndex) => {
 
 
             let context = {
                 rowContent: rowItem.map((item, index) => {
-                    let context = { column: index, row: rowIndex, value: item, type: "Value" };
+                    let context = {
+                        column: index,
+                        row: rowIndex,
+                        number: num(rowIndex, index),
+                        value: item, type: "Value"
+                    };
                     context.first = index == 0 ? true : false;
                     return mustache.render(this.tdTemplate, context);
                 }).join(""),

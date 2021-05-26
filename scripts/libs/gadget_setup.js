@@ -12,13 +12,27 @@ $(document).ready(function () {
         If you don't need the config data, you don't need to call gadget.fetch().
     */
     gadget.ready().then(gadget.fetch).then(function () {
-        $('#main').css({ 'font-size': gadget.getConfig('font_size') });
+        console.log(`FZ: ${gadget.getConfig('font_size')}`);
     });
 
     
+    document.body.addEventListener("gadget_insert", function (data) {
+
+
+        let htmlCode = data.detail;
+        
+            gadget.oucInsertAtCursor(htmlCode).then(function (result) {
+                if (result.error) {
+                    alert(result.error);
+                }
+            });   
+        });
+
 
     console.log(window.message ?? "No Message, Setup Done.");
 });
+
+
 
 $(gadget).on({
     'expanded': function (evt) {
