@@ -195,7 +195,11 @@ export class SimpleTable {
 
         let max = this.columns * row;
 
-        return (col + max) +1;
+        let num = (col + max) + 1;
+
+        let out = num < 10 ? `0${num}` : `${num}`;
+
+        return num;
     }
     /**
      * WARNING: _functions are not "public" & may yeild unexpected results.  
@@ -209,6 +213,7 @@ export class SimpleTable {
      */
     _uiHeader() {
         let num = this._calcNumber.bind(this);
+
         let headerHtml = this.tableHeading.map((item, index) => {
 
             let context = {
