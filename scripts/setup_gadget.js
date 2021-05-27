@@ -2,7 +2,7 @@
 
 import gadget from './libs/gadgetlib.js';
 
-export const setupGadget = () => {
+const setupGadget = () => {
         gadget.ready().then(gadget.fetch).then(function () {
             console.log(`FZ: ${gadget.getConfig('font_size')}`);
         });
@@ -45,3 +45,4 @@ export const setupGadget = () => {
     });
 };
 
+export default setupGadget;

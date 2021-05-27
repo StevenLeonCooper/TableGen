@@ -1,8 +1,6 @@
 import { events } from './helper_events.js';
 
-import {SimpleTable} from "./class_SimpleTable.js";
-
-import {setupGadget} from "./setup_gadget.js";
+import { SimpleTable } from "./class_SimpleTable.js";
 
 export const pageContext = {};
 
@@ -36,11 +34,20 @@ document.body.onload = () => {
     mainTable.updateInterface();
 };
 
-if (document.readyState != 'loading') {
-    setupGadget();
-} else {
-    document.addEventListener('DOMContentLoaded', setupGadget);
+if (window.isGadget === true) {
+    import("./setup_gadget.js").then((module) => {
+
+        const setupGadget = module.default;
+        
+        if (document.readyState != 'loading') {
+            setupGadget();
+        } else {
+            document.addEventListener('DOMContentLoaded', setupGadget);
+        }
+    });
 }
+
+
 
 window._debug = {
     context: pageContext,
