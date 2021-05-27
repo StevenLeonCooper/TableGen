@@ -2,6 +2,8 @@ import { events } from './helper_events.js';
 
 import {SimpleTable} from "./class_SimpleTable.js";
 
+import {setupGadget} from "./setup_gadget.js";
+
 export const pageContext = {};
 
 export const mainTable = new SimpleTable("MainTable");
@@ -33,6 +35,12 @@ document.body.onload = () => {
 
     mainTable.updateInterface();
 };
+
+if (document.readyState != 'loading') {
+    setupGadget();
+} else {
+    document.addEventListener('DOMContentLoaded', setupGadget);
+}
 
 window._debug = {
     context: pageContext,
