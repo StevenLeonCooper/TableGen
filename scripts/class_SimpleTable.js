@@ -4,6 +4,9 @@ import { UI } from './helper_ui.js';
 
 import { Benchmark } from "./class_Benchmark.js";
 
+/**
+ * Class representing an HTML table
+ */
 export class SimpleTable {
     constructor(tableId) {
         this.tableId = tableId;
@@ -59,26 +62,41 @@ export class SimpleTable {
         return template;
     }
 
+    /**
+     * Scans input HTML for a table and attempts to transform it into a compatible format
+     * while keeping the data intact. 
+     * @param {string} html 
+     * @returns the success (true/false) of the import. 
+     */
     import(html) {
+        // Add a temporary element to the actual page to query/manipulate
         let workshop = document.createElement("div");
         document.body.appendChild(workshop);
         workshop.style.visibility = "hidden";
         workshop.innerHTML = html;
 
+        // Check the input HTML for a table with content inside. 
         let check = workshop.querySelector("table")?.children?.length ?? 0;
         
+        // The table is empty or malformed, abort mission and return false. 
         if (check <= 0) return false;
 
+        // Get the caption text
         let caption = workshop.querySelector("caption")?.textContent ?? "No Caption";
 
+        // Get an array of the text content from the th tags to use as a header row. 
+        // This works for vertical header columns but the output will be pivoted. 
         let headRow = Array.from(workshop.querySelectorAll("th")).map((item) => {
             return item.textContent;
         });
 
+        // The maximum number of columns allowed (row with most TD's determins this)
         let colMax = 0;
 
+        // Convert TRs to an array
         let bodyRows = Array.from(workshop.querySelectorAll("tr")).map((rowItem, rowIndex) => {
-
+            
+            // Add another array of TD's for each TR, this matches how we store the table in the class. 
             let rowData = Array.from(rowItem.querySelectorAll("td"));
 
             let newRow = rowData.map((td) => {
@@ -90,6 +108,7 @@ export class SimpleTable {
 
             return newRow;
         }).filter((row) => {
+            // This filteres out rows with no TD tags (usually the header row). 
             if (row.length > 0) return true;
             return false;
         });
@@ -125,9 +144,13 @@ export class SimpleTable {
             this.tableBody = bodyRows;
         }
 
+        // If we made it this far, success. Return true to let the calling method know. 
         return true;
     }
 
+    /**
+     * Resets the entire table to the default values. 
+     */
     fullReset() {
         this.caption = "Table Caption";
         this.tableHeading = ["Heading"];
@@ -147,6 +170,7 @@ export class SimpleTable {
             item.splice(insertIndex, 0, this.defaultNewValue)
         });
     }
+
     addRow(insertIndex) {
         insertIndex = insertIndex ?? this.tableBody.length;
 
@@ -170,6 +194,9 @@ export class SimpleTable {
         this.tableBody.splice(index, 1);
     }
 
+    /**
+     * The raw HTML output of the table.
+     */
     get htmlOutput() {
         let headerHtml = this.tableHeading.map(value => `\n           <th>${value}</th>`).join(' ');
         let bodyHtml = "";
@@ -191,6 +218,10 @@ export class SimpleTable {
         return outHtml;
     }
 
+    /**
+     * WARNING: _functions are private & may yield unexpected results. 
+     * @returns the number of the cell given a row/column combination
+     */
     _calcNumber(row, col) {
 
         let max = this.columns * row;
@@ -202,14 +233,16 @@ export class SimpleTable {
         return num;
     }
     /**
-     * WARNING: _functions are not "public" & may yeild unexpected results.  
+     * WARNING: _functions are private & may yield unexpected results.  
+     * Updates the UI, synchronizing the caption. 
      */
     _uiCaption() {
         this.element.querySelector("caption").textContent = this.caption;
     }
 
     /**
-     * WARNING: _functions are not "public" & may yeild unexpected results.  
+     * WARNING: _functions are private & may yield unexpected results.  
+     * Updates the UI, synchronizing the header row. 
      */
     _uiHeader() {
         let num = this._calcNumber.bind(this);
@@ -232,6 +265,7 @@ export class SimpleTable {
 
     /**
      * WARNING: _functions are not "public" & may yeild unexpected results.  
+     * Updates the UI, synchronizing the table body. 
      */
     _uiBody() {
         let bodyHtml = "";
@@ -265,15 +299,20 @@ export class SimpleTable {
         this.element.querySelector("tbody").innerHTML = bodyHtml;
     }
 
-    updateInterface(type, location) {
+    /**
+     * Updates the UI, synchronizing the specified sections. 
+     * @param {array} section - Array of target sections, 
+     * valid sections include "Caption", "Header" and "Body"
+     */
+    updateInterface(section) {
         let bench = new Benchmark("Update UI");
 
-        type = type ?? ["Caption", "Header", "Body"];
+        section = section ?? ["Caption", "Header", "Body"];
 
-        let i = 0, len = type.length;
+        let i = 0, len = section.length;
 
         for (i; i < len; i++) {
-            let section = `_ui${type?.[i]}`;
+            let section = `_ui${section?.[i]}`;
             let method = this?.[section];
             method.bind(this).call();
         }
