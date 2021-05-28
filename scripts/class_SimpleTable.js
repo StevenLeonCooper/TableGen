@@ -22,7 +22,14 @@ export class SimpleTable {
             this.validationError = "The caption cannot be blank.";
             return false;
         }
-
+        if (this.tableHeading.length < 1) {
+            this.validationError = "The table must have a header row.";
+            return false;
+        }
+        if (this.tableBody.length < 1) {
+            this.validationError = "The table most have content.";
+            return false;
+        }
         return true;
     }
 
@@ -77,7 +84,7 @@ export class SimpleTable {
 
         // Check the input HTML for a table with content inside. 
         let check = workshop.querySelector("table")?.children?.length ?? 0;
-        
+
         // The table is empty or malformed, abort mission and return false. 
         if (check <= 0) return false;
 
@@ -95,7 +102,7 @@ export class SimpleTable {
 
         // Convert TRs to an array
         let bodyRows = Array.from(workshop.querySelectorAll("tr")).map((rowItem, rowIndex) => {
-            
+
             // Add another array of TD's for each TR, this matches how we store the table in the class. 
             let rowData = Array.from(rowItem.querySelectorAll("td"));
 

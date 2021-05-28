@@ -1,7 +1,5 @@
 import mustache from "./libs/mustache.js";
 
-import { pageContext } from "./app.js";
-
 import { events } from "./helper_events.js";
 
 export const UI = {};
@@ -22,7 +20,8 @@ UI.get = {
 
         let html = document.querySelector(selector).innerHTML;
 
-        let rendered = mustache.render(html, pageContext);
+        //TODO: Implement Context
+        let rendered = mustache.render(html, {});
 
         return rendered;
     }
