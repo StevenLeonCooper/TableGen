@@ -319,8 +319,8 @@ export class SimpleTable {
         let i = 0, len = section.length;
 
         for (i; i < len; i++) {
-            let section = `_ui${section?.[i]}`;
-            let method = this?.[section];
+            let target = `_ui${section?.[i]}`;
+            let method = this?.[target];
             method.bind(this).call();
         }
 
