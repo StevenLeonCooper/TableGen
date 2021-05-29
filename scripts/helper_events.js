@@ -9,25 +9,40 @@ export const events = {
     actions: {}
 };
 
+const triggerEvent = (name, data, element) => {
+    let eventData = { detail: data };
+    let event = new CustomEvent(name, eventData);
+
+    element = element ?? document;
+
+    element.dispatchEvent?.(event, eventData);
+};
+
+const triggerEventAll = (name, data, selector) => {
+
+    let elements = document.querySelectorAll(selector);
+
+    elements.forEach((item) => {
+        triggerEvent(name, data, item);
+    });
+
+};
+
 events.click.addToPage = () => {
 
-    if(!mainTable.isValid){
+    if (!mainTable.isValid) {
         UI.warning(mainTable.validationError);
         return false;
     }
 
-    let data = { detail: mainTable.htmlOutput };
-
-    const insertEvent = new CustomEvent("gadget_insert", data);
-
-    document.body.dispatchEvent(insertEvent);
+    triggerEvent("gadget_insert", mainTable.htmlOutput);
 };
 
 events.actions.importHtml = (html) => {
 
     let success = mainTable.import(html);
 
-    if(!success){
+    if (!success) {
         UI.warning("Could Not Find Table in Imported HTML");
         return false;
     }
