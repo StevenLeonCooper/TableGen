@@ -11,3 +11,5 @@ The App version of this app does not import GadgetLib.js or jQuery so it has a l
 # Built with Parcel
 
 Included in package.json are 2 build scripts for use with Parcel V2, one for each app type. Building/bundling is not required unless you want to maximize browser compatibility. Each script outputs files to the "dist" folder. 
+
+Build Command (after installing via npm i parcel): npm run build || npm run gadget_build

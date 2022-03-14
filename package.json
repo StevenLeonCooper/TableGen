@@ -2,26 +2,22 @@
   "name": "tablegen",
   "version": "1.0.0",
   "description": "WCAG Compliant Table Generation",
-
   "scripts": {
     "build": "parcel build --no-content-hash ./index.html --public-url ./ --dist-dir ./dist --target app",
     "gadget_build": "parcel build --no-content-hash ./gadget.html  --public-url ./ --target gadget"
   },
-
   "app": "dist/app/index.html",
-  "gadget" : "dist/gadget/index.html",
+  "gadget": "dist/gadget/index.html",
   "targets": {
     "app": {},
     "gadget": {}
   },
-
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "commonjs": "0.0.1",
-    "parcel": "^2.0.0-beta.2"
+    "parcel": "^2.3.2"
   },
-  "dependencies": {},
   "browserslist": [
     "defaults"
   ],

@@ -8,7 +8,7 @@ const setupGadget = () => {
         });
 
 
-        document.body.addEventListener("gadget_insert", function (data) {
+        document.addEventListener("gadget_insert", function (data) {
             let htmlCode = data.detail;
 
             gadget.oucInsertAtCursor(htmlCode).then(function (result) {
@@ -16,6 +16,9 @@ const setupGadget = () => {
                     alert(result.error);
                 }
             });
+
+            console.log("Html Added to Page");
+
         });
         console.log(window.message ?? "No Message, Setup Done.");
 

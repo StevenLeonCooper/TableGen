@@ -30,6 +30,8 @@ const triggerEventAll = (name, data, selector) => {
 
 events.click.addToPage = () => {
 
+    console.log("Adding HTML...");
+
     if (!mainTable.isValid) {
         UI.warning(mainTable.validationError);
         return false;
@@ -114,6 +116,66 @@ events.click.removeRow = (source) => {
     mainTable.updateInterface(["Body"]);
 };
 
+
+
+events.keyup.syncColumns = (source) => {
+    let targetCols = source.value ?? 1,
+        currentCols = mainTable.columns,
+        i = 0, cols = 0;
+
+    if (targetCols == currentCols) return false;
+
+    if (targetCols > currentCols) {
+        i = currentCols;
+        for (i; i < targetCols; i++) {
+            mainTable.addColumn();
+        }
+    }
+
+    if (targetCols < currentCols) {
+        i = currentCols;
+        for (i; i > targetCols; i--) {
+            mainTable.removeColumn();
+        }
+    }
+
+    console.log("Columns Synced");
+};
+
+events.keyup.syncRows = (source) => {
+    let targetRows = source.value ?? 1,
+        currentRows = mainTable.rows,
+        i = 0, Rows = 0;
+
+    if (targetRows == currentRows) return false;
+
+    if (targetRows > currentRows) {
+        i = currentRows;
+        for (i; i < targetRows; i++) {
+            mainTable.addRow();
+        }
+    }
+
+    if (targetRows < currentRows) {
+        i = currentRows;
+        for (i; i > targetRows; i--) {
+            mainTable.removeRow();
+        }
+    }
+
+    console.log("Rows Synced");
+};
+
+events.change.syncColumns = (source) => {
+    events.keyup.syncColumns(source);
+};
+
+events.change.syncRows = events.keyup.syncRows;
+
+events.click.insertIntoEditor = (source) => {
+
+};
+
 events.change.syncHeading = (source) => {
 
     let location = source.dataset.location.split(",");
@@ -143,4 +205,16 @@ events.click.previewTable = () => {
 
 events.keyup.syncDefaultValue = (source) => {
     mainTable.defaultNewValue = source.value;
+};
+
+events.click.toggleFor = (source) => {
+
+    let target = source.dataset.for ?? "body";
+
+    target = document.querySelector(target);
+
+    if (!target instanceof HTMLElement) return false;
+
+    target.classList.toggle("hidden");
+
 };
